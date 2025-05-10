@@ -39,3 +39,8 @@
 bin/
 build/
 Databases/
+
+# SQLite
+!libsqlite3.so
+!sqlite3.dll
+!sqlite3.lib

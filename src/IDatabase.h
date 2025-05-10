@@ -16,6 +16,8 @@ namespace database
 
 		const std::string& getDatabaseName() const;
 
+		virtual std::string getDatabaseFileName() const = 0;
+
 		virtual ~IDatabase() = default;
 	};
 }

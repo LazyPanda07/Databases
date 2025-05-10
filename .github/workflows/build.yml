@@ -23,14 +23,14 @@ jobs:
       run: |
           mkdir build 
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=../Databases -G "NMake Makefiles" ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
           nmake install
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.configuration }}_Windows
-        path: Databases
+        path: build/Databases
   
 
   linux-build:
@@ -47,11 +47,11 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=../Databases ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
           make install -j $(nproc)
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.configuration }}_Linux
-        path: Databases
+        path: build/Databases
