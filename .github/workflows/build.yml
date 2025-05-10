@@ -55,3 +55,39 @@ jobs:
       with:
         name: ${{ matrix.configuration }}_Linux
         path: build/Databases
+
+
+  android-build:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:android
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          make install -j $(nproc)
+
+    - name: Move
+      working-directory: build/Databases
+      run: |
+          cd lib
+          mkdir arm64-v8a
+          mv *.so arm64-v8a
+          rm -rf *.a
+          rm -rf vendor
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_Android
+        path: build/Databases
