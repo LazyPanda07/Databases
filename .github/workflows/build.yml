@@ -1,0 +1,57 @@
+name: Build
+
+
+on:
+  push: 
+    branches: [master, dev]
+
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build
+      run: |
+          mkdir build 
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=../Databases -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_Windows
+        path: Databases
+  
+
+  linux-build:
+    runs-on: ubuntu-latest
+    container: lazypanda07/ubuntu_cxx20:24.04
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Build
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=../Databases ..
+          make install -j $(nproc)
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_Linux
+        path: Databases
