@@ -7,6 +7,6 @@ namespace database
 	class ITable
 	{
 	public:
-		static inline constexpr std::string_view tableName;
+		static inline constexpr std::string_view tableName = "";
 	};
 }
