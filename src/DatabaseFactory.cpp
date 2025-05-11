@@ -12,7 +12,7 @@ static constexpr std::array<std::pair<std::string_view, database::Database* (*)(
 	std::make_pair(database::SQLiteDatabase::implementationName, &database::SQLiteDatabase::createDatabase)
 };
 
-static constexpr std::array<std::pair<std::string_view, database::Table* (*)(std::string_view)>, 1> createTableFunctions =
+static constexpr std::array<std::pair<std::string_view, database::Table* (*)(std::string_view, database::Database* database)>, 1> createTableFunctions =
 {
 	std::make_pair(database::SQLiteTable::implementationName, &database::SQLiteTable::createTable)
 };
@@ -36,7 +36,7 @@ namespace database
 		return it->second(databaseName);
 	}
 
-	std::shared_ptr<Table> createTable(std::string_view implementationName, std::string_view tableName, std::shared_ptr<Database> database)
+	const std::unique_ptr<Table>& createTable(std::string_view implementationName, std::string_view tableName, std::shared_ptr<Database> database)
 	{
 		if (database->contains(tableName))
 		{
@@ -50,11 +50,7 @@ namespace database
 			throw std::runtime_error(std::format("Wrong implementation name: {}", implementationName));
 		}
 
-		std::shared_ptr<Table> result(it->second(tableName));
-
-		database->addTable(result);
-
-		return result;
+		return database->addTable(it->second(tableName, database.get()));
 	}
 
 	Table* createRawTable(std::string_view implementationName, std::string_view tableName, Database* database)
@@ -71,10 +67,6 @@ namespace database
 			throw std::runtime_error(std::format("Wrong implementation name: {}", implementationName));
 		}
 
-		std::shared_ptr<Table> result(it->second(tableName));
-
-		database->addTable(result);
-
-		return result.get();
+		return database->addTable(it->second(tableName, database)).get();
 	}
 }

@@ -33,6 +33,12 @@
     <ClInclude Include="src\Exceptions\DatabaseException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Queries\Query.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SQLValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DatabaseFactory.cpp">
@@ -51,6 +57,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Queries\Query.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SQLValue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

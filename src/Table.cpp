@@ -4,8 +4,9 @@
 
 namespace database
 {
-	Table::Table(std::string_view tableName) :
-		tableName(tableName)
+	Table::Table(std::string_view tableName, Database* database) :
+		tableName(tableName),
+		database(database)
 	{
 
 	}

@@ -16,6 +16,8 @@
     <ClInclude Include="src\Database.h" />
     <ClInclude Include="src\Implementations\SQLiteDatabase.h" />
     <ClInclude Include="src\Implementations\SQLiteTable.h" />
+    <ClInclude Include="src\Queries\Query.h" />
+    <ClInclude Include="src\SQLValue.h" />
     <ClInclude Include="src\Table.h" />
   </ItemGroup>
   <ItemGroup>
@@ -24,6 +26,8 @@
     <ClCompile Include="src\Database.cpp" />
     <ClCompile Include="src\Implementations\SQLiteDatabase.cpp" />
     <ClCompile Include="src\Implementations\SQLiteTable.cpp" />
+    <ClCompile Include="src\Queries\Query.cpp" />
+    <ClCompile Include="src\SQLValue.cpp" />
     <ClCompile Include="src\Table.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

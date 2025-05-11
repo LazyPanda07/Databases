@@ -28,18 +28,18 @@ namespace database
 		};
 
 	private:
-		void addTable(std::shared_ptr<Table> table);
+		const std::unique_ptr<Table>& addTable(Table* table);
 
 	protected:
 		std::string databaseName;
-		std::unordered_map<std::string, std::shared_ptr<Table>, StringViewHash, StringViewEqual> tables;
+		std::unordered_map<std::string, std::unique_ptr<Table>, StringViewHash, StringViewEqual> tables;
 
 	public:
 		Database(std::string_view databaseName);
 
 		bool contains(std::string_view tableName, Table* outTable = nullptr) const;
 
-		std::shared_ptr<Table> get(std::string_view tableName) const;
+		const std::unique_ptr<Table>& get(std::string_view tableName) const;
 
 		const std::string& getDatabaseName() const;
 
@@ -48,9 +48,9 @@ namespace database
 		virtual ~Database() = default;
 
 		friend Table* createRawTable(std::string_view implementationName, std::string_view tableName, Database* database);
-		friend std::shared_ptr<Table> createTable(std::string_view implementationName, std::string_view tableName, std::shared_ptr<Database> database);
+		friend const std::unique_ptr<Table>& createTable(std::string_view implementationName, std::string_view tableName, std::shared_ptr<Database> database);
 
 		template<std::derived_from<Table> T>
-		friend std::shared_ptr<Table> createTable(std::string_view tableName, std::shared_ptr<Database> database);
+		friend const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database);
 	};
 }

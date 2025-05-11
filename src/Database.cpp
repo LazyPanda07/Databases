@@ -16,9 +16,9 @@ namespace database
 		return left == right;
 	}
 
-	void Database::addTable(std::shared_ptr<Table> table)
+	const std::unique_ptr<Table>& Database::addTable(Table* table)
 	{
-		tables.try_emplace(table->getTableName(), std::move(table));
+		return tables.try_emplace(table->getTableName(), std::unique_ptr<Table>(table)).first->second;
 	}
 
 	bool Database::contains(std::string_view tableName, Table* outTable) const
@@ -34,7 +34,7 @@ namespace database
 		return result;
 	}
 
-	std::shared_ptr<Table> Database::get(std::string_view tableName) const
+	const std::unique_ptr<Table>& Database::get(std::string_view tableName) const
 	{
 		auto it = tables.find(tableName);
 
