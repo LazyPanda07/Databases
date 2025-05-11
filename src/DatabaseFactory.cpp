@@ -5,35 +5,76 @@
 #include <array>
 
 #include "Implementations/SQLiteDatabase.h"
+#include "Implementations/SQLiteTable.h"
 
-static constexpr std::array<std::pair<std::string_view, database::IDatabase* (*)(std::string_view)>, 1> createFunctions =
+static constexpr std::array<std::pair<std::string_view, database::Database* (*)(std::string_view)>, 1> createDatabaseFunctions =
 {
 	std::make_pair(database::SQLiteDatabase::implementationName, &database::SQLiteDatabase::createDatabase)
 };
 
+static constexpr std::array<std::pair<std::string_view, database::Table* (*)(std::string_view)>, 1> createTableFunctions =
+{
+	std::make_pair(database::SQLiteTable::implementationName, &database::SQLiteTable::createTable)
+};
+
 namespace database
 {
-	std::shared_ptr<IDatabase> createDatabase(std::string_view implementationName, std::string_view databaseName)
+	std::shared_ptr<Database> createDatabase(std::string_view implementationName, std::string_view databaseName)
 	{
-		auto it = std::ranges::find_if(createFunctions, [implementationName](const auto& value) { return value.first == implementationName; });
-
-		if (it == createFunctions.end())
-		{
-			throw std::runtime_error(std::format("Wrong implementation name: {}", implementationName));
-		}
-
-		return std::shared_ptr<IDatabase>(it->second(databaseName));
+		return std::shared_ptr<Database>(createRawDatabase(implementationName, databaseName));
 	}
 
-	IDatabase* createRawDatabase(std::string_view implementationName, std::string_view databaseName)
+	Database* createRawDatabase(std::string_view implementationName, std::string_view databaseName)
 	{
-		auto it = std::ranges::find_if(createFunctions, [implementationName](const auto& value) { return value.first == implementationName; });
+		auto it = std::ranges::find_if(createDatabaseFunctions, [implementationName](const auto& value) { return value.first == implementationName; });
 
-		if (it == createFunctions.end())
+		if (it == createDatabaseFunctions.end())
 		{
 			throw std::runtime_error(std::format("Wrong implementation name: {}", implementationName));
 		}
 
 		return it->second(databaseName);
+	}
+
+	std::shared_ptr<Table> createTable(std::string_view implementationName, std::string_view tableName, std::shared_ptr<Database> database)
+	{
+		if (database->contains(tableName))
+		{
+			return database->get(tableName);
+		}
+
+		auto it = std::ranges::find_if(createTableFunctions, [implementationName](const auto& value) { return value.first == implementationName; });
+
+		if (it == createTableFunctions.end())
+		{
+			throw std::runtime_error(std::format("Wrong implementation name: {}", implementationName));
+		}
+
+		std::shared_ptr<Table> result(it->second(tableName));
+
+		database->addTable(result);
+
+		return result;
+	}
+
+	Table* createRawTable(std::string_view implementationName, std::string_view tableName, Database* database)
+	{
+		if (Table* temp = nullptr; database->contains(tableName, temp))
+		{
+			return temp;
+		}
+
+		auto it = std::ranges::find_if(createTableFunctions, [implementationName](const auto& value) { return value.first == implementationName; });
+
+		if (it == createTableFunctions.end())
+		{
+			throw std::runtime_error(std::format("Wrong implementation name: {}", implementationName));
+		}
+
+		std::shared_ptr<Table> result(it->second(tableName));
+
+		database->addTable(result);
+
+		return result.get();
 	}
 }

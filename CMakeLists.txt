@@ -10,11 +10,12 @@ project(Databases VERSION 1.0.0)
 
 add_library(
 	${PROJECT_NAME} STATIC 
-	src/IDatabaseImplementation.cpp
-	src/IDatabase.cpp
+	src/Database.cpp
+	src/Table.cpp
 	src/DatabaseFactory.cpp
 	src/Implementations/SQLiteDatabase.cpp
 	src/Implementations/SQLiteTable.cpp
+	src/Exceptions/DatabaseException.cpp
 )
 
 if(UNIX)

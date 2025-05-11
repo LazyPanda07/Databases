@@ -8,13 +8,13 @@
 
 namespace database
 {
-	IDatabase* SQLiteDatabase::createDatabase(std::string_view databaseName)
+	Database* SQLiteDatabase::createDatabase(std::string_view databaseName)
 	{
 		return new SQLiteDatabase(databaseName);
 	}
 
 	SQLiteDatabase::SQLiteDatabase(std::string_view databaseName) :
-		IDatabase(databaseName),
+		Database(databaseName),
 		connection(nullptr)
 	{
 		if (sqlite3_open(this->getDatabaseFileName().data(), &connection) != SQLITE_OK)

@@ -13,19 +13,18 @@
   <ItemGroup>
     <ClInclude Include="src\DatabaseFactory.h" />
     <ClInclude Include="src\Exceptions\DatabaseException.h" />
-    <ClInclude Include="src\IDatabase.h" />
-    <ClInclude Include="src\IDatabaseImplementation.h" />
+    <ClInclude Include="src\Database.h" />
     <ClInclude Include="src\Implementations\SQLiteDatabase.h" />
     <ClInclude Include="src\Implementations\SQLiteTable.h" />
-    <ClInclude Include="src\ITable.h" />
+    <ClInclude Include="src\Table.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DatabaseFactory.cpp" />
     <ClCompile Include="src\Exceptions\DatabaseException.cpp" />
-    <ClCompile Include="src\IDatabase.cpp" />
-    <ClCompile Include="src\IDatabaseImplementation.cpp" />
+    <ClCompile Include="src\Database.cpp" />
     <ClCompile Include="src\Implementations\SQLiteDatabase.cpp" />
     <ClCompile Include="src\Implementations\SQLiteTable.cpp" />
+    <ClCompile Include="src\Table.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -18,13 +18,10 @@
     <ClInclude Include="src\DatabaseFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\IDatabase.h">
+    <ClInclude Include="src\Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ITable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IDatabaseImplementation.h">
+    <ClInclude Include="src\Table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Implementations\SQLiteDatabase.h">
@@ -44,16 +41,16 @@
     <ClCompile Include="src\Implementations\SQLiteDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IDatabaseImplementation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Implementations\SQLiteTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IDatabase.cpp">
+    <ClCompile Include="src\Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\DatabaseException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
