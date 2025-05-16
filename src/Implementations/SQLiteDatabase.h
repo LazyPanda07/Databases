@@ -21,6 +21,8 @@ namespace database
 	public:
 		SQLiteDatabase(std::string_view databaseName);
 
+		sqlite3* operator *() const;
+
 		std::string getDatabaseFileName() const override;
 
 		~SQLiteDatabase();

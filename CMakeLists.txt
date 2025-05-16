@@ -13,6 +13,8 @@ add_library(
 	src/Database.cpp
 	src/Table.cpp
 	src/DatabaseFactory.cpp
+	src/SQLValue.cpp
+	src/SQLResult.cpp
 	src/Implementations/SQLiteDatabase.cpp
 	src/Implementations/SQLiteTable.cpp
 	src/Exceptions/DatabaseException.cpp

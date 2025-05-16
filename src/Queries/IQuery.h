@@ -4,13 +4,13 @@
 
 namespace database
 {
-	class Query
+	class IQuery
 	{
 	public:
-		Query() = default;
+		IQuery() = default;
 
 		virtual std::string_view getQuery() const = 0;
 
-		virtual ~Query() = default;
+		virtual ~IQuery() = default;
 	};
 }

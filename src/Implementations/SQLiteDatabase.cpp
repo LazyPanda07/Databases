@@ -23,6 +23,11 @@ namespace database
 		}
 	}
 
+	sqlite3* SQLiteDatabase::operator *() const
+	{
+		return connection;
+	}
+
 	std::string SQLiteDatabase::getDatabaseFileName() const
 	{
 		return std::format("{}.{}", this->getDatabaseName(), SQLiteDatabase::fileExtension);
