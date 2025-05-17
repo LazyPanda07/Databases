@@ -14,5 +14,12 @@ TEST(SQLite, CreateDatabase)
 
 TEST(SQLite, CreateTable)
 {
-	ASSERT_NO_THROW(database::createTable<database::SQLiteTable>("test_table", db, "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, userName TEXT NOT NULL UNIQUE, uuid TEXT NOT NULL UNIQUE, online BOOLEAN NOT NULL)"));
+	ASSERT_NO_THROW
+	(
+		(database::createTable<database::SQLiteTable, database::CreateTableQuery>(
+			"test_table",
+			db,
+			"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, userName TEXT NOT NULL UNIQUE, uuid TEXT NOT NULL UNIQUE, online BOOLEAN NOT NULL)"
+		))
+	);
 }
