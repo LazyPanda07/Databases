@@ -16,7 +16,9 @@
     <ClInclude Include="src\Database.h" />
     <ClInclude Include="src\Implementations\SQLiteDatabase.h" />
     <ClInclude Include="src\Implementations\SQLiteTable.h" />
+    <ClInclude Include="src\Queries\CreateTableQuery.h" />
     <ClInclude Include="src\Queries\IQuery.h" />
+    <ClInclude Include="src\Queries\RawQuery.h" />
     <ClInclude Include="src\SQLResult.h" />
     <ClInclude Include="src\SQLValue.h" />
     <ClInclude Include="src\Table.h" />
@@ -27,6 +29,8 @@
     <ClCompile Include="src\Database.cpp" />
     <ClCompile Include="src\Implementations\SQLiteDatabase.cpp" />
     <ClCompile Include="src\Implementations\SQLiteTable.cpp" />
+    <ClCompile Include="src\Queries\CreateTableQuery.cpp" />
+    <ClCompile Include="src\Queries\RawQuery.cpp" />
     <ClCompile Include="src\SQLResult.cpp" />
     <ClCompile Include="src\SQLValue.cpp" />
     <ClCompile Include="src\Table.cpp" />

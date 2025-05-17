@@ -2,6 +2,8 @@
 
 #include "Table.h"
 
+#include "Queries/CreateTableQuery.h"
+
 typedef struct sqlite3 sqlite3;
 
 namespace database
@@ -12,15 +14,15 @@ namespace database
 		static inline constexpr std::string_view implementationName = "sqlite";
 
 	public:
-		static Table* createTable(std::string_view databaseName, Database* database);
+		static Table* createTable(std::string_view databaseName, const CreateTableQuery& query, Database* database);
 
 	private:
 		sqlite3* getConnection() const;
 
 	public:
-		SQLiteTable(std::string_view tableName, Database* database);
+		SQLiteTable(std::string_view tableName, const CreateTableQuery& query, Database* database);
 
-		SQLResult execute(const std::unique_ptr<IQuery>& query, const std::vector<SQLValue>& values, bool insertTableNameAsFirstArgument) override;
+		SQLResult execute(const IQuery& query, const std::vector<SQLValue>& values, bool insertTableNameAsFirstArgument) override;
 
 		~SQLiteTable() = default;
 	};

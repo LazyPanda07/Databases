@@ -38,7 +38,11 @@
 # Binaries
 bin/
 build/
-Databases/
+out/
+Databases
+
+# GTest
+Tests/gtest
 
 # SQLite
 !libsqlite3.so

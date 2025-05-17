@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "Table.h"
+#include "Queries/CreateTableQuery.h"
 
 namespace database
 {
@@ -47,10 +48,10 @@ namespace database
 
 		virtual ~Database() = default;
 
-		friend Table* createRawTable(std::string_view implementationName, std::string_view tableName, Database* database);
-		friend const std::unique_ptr<Table>& createTable(std::string_view implementationName, std::string_view tableName, std::shared_ptr<Database> database);
+		friend Table* createRawTable(std::string_view implementationName, std::string_view tableName, const CreateTableQuery& query, Database* database);
+		friend const std::unique_ptr<Table>& createTable(std::string_view implementationName, std::string_view tableName, const CreateTableQuery& query, std::shared_ptr<Database> database);
 
-		template<std::derived_from<Table> T>
-		friend const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database);
+		template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> Query, typename... Args>
+		friend const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database, Args&&... args);
 	};
 }

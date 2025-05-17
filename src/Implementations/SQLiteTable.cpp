@@ -14,24 +14,34 @@ namespace database
 		return **static_cast<SQLiteDatabase*>(database);
 	}
 
-	Table* SQLiteTable::createTable(std::string_view databaseName, Database* database)
+	Table* SQLiteTable::createTable(std::string_view databaseName, const CreateTableQuery& query, Database* database)
 	{
-		return new SQLiteTable(databaseName, database);
+		return new SQLiteTable(databaseName, query, database);
 	}
 
-	SQLiteTable::SQLiteTable(std::string_view tableName, Database* database) :
+	SQLiteTable::SQLiteTable(std::string_view tableName, const CreateTableQuery& query, Database* database) :
 		Table(tableName, database)
 	{
+		sqlite3* connection = this->getConnection();
+		char* errorMessage = nullptr;
 
+		if (sqlite3_exec(connection, query.getQuery().data(), nullptr, nullptr, &errorMessage) != SQLITE_OK)
+		{
+			exception::DatabaseException exception(errorMessage);
+
+			sqlite3_free(errorMessage);
+
+			throw exception;
+		}
 	}
 
-	SQLResult SQLiteTable::execute(const std::unique_ptr<IQuery>& query, const std::vector<SQLValue>& values, bool insertTableNameAsFirstArgument)
+	SQLResult SQLiteTable::execute(const IQuery& query, const std::vector<SQLValue>& values, bool insertTableNameAsFirstArgument)
 	{
 		sqlite3* connection = this->getConnection();
 		sqlite3_stmt* statement;
 		int responseCode;
 
-		if (responseCode = sqlite3_prepare_v2(connection, query->getQuery().data(), -1, &statement, nullptr); responseCode != SQLITE_OK)
+		if (responseCode = sqlite3_prepare_v2(connection, query.getQuery().data(), -1, &statement, nullptr); responseCode != SQLITE_OK)
 		{
 			throw exception::DatabaseException(sqlite3_errmsg(connection));
 		}

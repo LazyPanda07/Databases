@@ -8,7 +8,7 @@ namespace database
 		tableName(tableName),
 		database(database)
 	{
-
+		
 	}
 
 	const std::string& Table::getTableName() const

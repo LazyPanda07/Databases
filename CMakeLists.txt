@@ -18,6 +18,8 @@ add_library(
 	src/Implementations/SQLiteDatabase.cpp
 	src/Implementations/SQLiteTable.cpp
 	src/Exceptions/DatabaseException.cpp
+	src/Queries/RawQuery.cpp
+	src/Queries/CreateTableQuery.cpp
 )
 
 if(UNIX)
