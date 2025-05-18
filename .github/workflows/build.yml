@@ -161,5 +161,5 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          ./Tests
+          LD_LIBRARY_PATH=$(pwd) ./Tests
       
