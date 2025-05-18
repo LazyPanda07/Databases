@@ -46,6 +46,14 @@ namespace database
 			throw exception::DatabaseException(sqlite3_errmsg(connection));
 		}
 
+		auto deleter = [](sqlite3_stmt* ptr)
+			{
+				printf("deleter\n");
+
+				sqlite3_finalize(ptr);
+			};
+		std::unique_ptr<sqlite3_stmt, decltype(deleter)> finalizer(statement, deleter);
+
 		int currentIndex = 1;
 		SQLResult result;
 
@@ -149,8 +157,6 @@ namespace database
 						break;
 
 					default:
-						sqlite3_finalize(statement);
-
 						throw exception::DatabaseException("Unknown type");
 					}
 
@@ -168,13 +174,9 @@ namespace database
 				break;
 
 			default:
-				sqlite3_finalize(statement);
-
 				throw exception::DatabaseException(sqlite3_errmsg(connection));
 			}
 		}
-
-		sqlite3_finalize(statement);
 
 		return result;
 	}
