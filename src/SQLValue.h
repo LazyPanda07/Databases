@@ -7,6 +7,9 @@
 
 namespace database
 {
+	template<typename T>
+	concept OneOf = std::is_same_v<T, int64_t> || std::is_same_v<T, double> || std::is_same_v<T, std::string> || std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::vector<uint8_t>>;
+
 	class SQLValue
 	{
 	public:
@@ -24,6 +27,15 @@ namespace database
 
 		const ValueType& operator *() const;
 
+		template<OneOf T>
+		const T& get() const;
+
 		SQLValue() = default;
 	};
+
+	template<OneOf T>
+	const T& SQLValue::get() const
+	{
+		return std::get<T>(value);
+	}
 }

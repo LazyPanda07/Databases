@@ -22,7 +22,7 @@ namespace database
 	public:
 		SQLiteTable(std::string_view tableName, const CreateTableQuery& query, Database* database);
 
-		SQLResult execute(const IQuery& query, const std::vector<SQLValue>& values, bool insertTableNameAsFirstArgument) override;
+		SQLResult execute(const IQuery& query, const std::vector<SQLValue>& values) override;
 
 		~SQLiteTable() = default;
 	};

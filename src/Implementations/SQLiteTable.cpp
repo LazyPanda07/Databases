@@ -35,7 +35,7 @@ namespace database
 		}
 	}
 
-	SQLResult SQLiteTable::execute(const IQuery& query, const std::vector<SQLValue>& values, bool insertTableNameAsFirstArgument)
+	SQLResult SQLiteTable::execute(const IQuery& query, const std::vector<SQLValue>& values)
 	{
 		sqlite3* connection = this->getConnection();
 		sqlite3_stmt* statement;
@@ -48,21 +48,13 @@ namespace database
 
 		auto deleter = [](sqlite3_stmt* ptr)
 			{
-				printf("deleter\n");
-
 				sqlite3_finalize(ptr);
 			};
 		std::unique_ptr<sqlite3_stmt, decltype(deleter)> finalizer(statement, deleter);
-
-		int currentIndex = 1;
 		SQLResult result;
+		int currentIndex = 1;
 
-		if (insertTableNameAsFirstArgument)
-		{
-			sqlite3_bind_text(statement, currentIndex++, this->getTableName().data(), -1, nullptr);
-		}
-
-		for (size_t i = 0; i < values.size(); i++)
+		for (size_t i = 0; i < values.size(); i++, currentIndex++)
 		{
 			const SQLValue::ValueType& value = *values[i];
 
@@ -105,8 +97,6 @@ namespace database
 			default:
 				throw exception::DatabaseException(std::format("Wrong index: {}", value.index()));
 			}
-
-			currentIndex++;
 		}
 
 		while ((responseCode = sqlite3_step(statement)) != SQLITE_DONE)
@@ -140,7 +130,7 @@ namespace database
 
 						break;
 
-					case SQLITE_BLOB: 
+					case SQLITE_BLOB:
 					{
 						const uint8_t* blobData = static_cast<const uint8_t*>(sqlite3_column_blob(statement, i));
 						int blobSize = sqlite3_column_bytes(statement, i);
