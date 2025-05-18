@@ -136,6 +136,9 @@ jobs:
     needs: linux-build
     container:
       image: lazypanda07/ubuntu_cxx20:24.04
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v4
