@@ -3,6 +3,7 @@
 #include "Table.h"
 
 #include "Queries/CreateTableQuery.h"
+#include "DatabaseUtility.h"
 
 typedef struct sqlite3 sqlite3;
 
@@ -11,7 +12,7 @@ namespace database
 	class SQLiteTable : public Table
 	{
 	public:
-		static inline constexpr std::string_view implementationName = "sqlite";
+		static inline constexpr std::string_view implementationName = implementation::sqlite;
 
 	public:
 		static Table* createTable(std::string_view databaseName, const CreateTableQuery& query, Database* database);

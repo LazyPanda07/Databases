@@ -2,6 +2,8 @@
 
 #include "Database.h"
 
+#include "DatabaseUtility.h"
+
 typedef struct sqlite3 sqlite3;
 
 namespace database
@@ -9,8 +11,8 @@ namespace database
 	class SQLiteDatabase final : public Database
 	{
 	public:
-		static inline constexpr std::string_view implementationName = "sqlite";
-		static inline constexpr std::string_view fileExtension = "sqlite";
+		static inline constexpr std::string_view implementationName = implementation::sqlite;
+		static inline constexpr std::string_view fileExtension = implementation::sqlite;
 
 	public:
 		static Database* createDatabase(std::string_view databaseName);

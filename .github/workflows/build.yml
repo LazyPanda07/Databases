@@ -163,3 +163,51 @@ jobs:
           cd build/bin
           LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd) ./Tests
       
+
+  publish:
+    needs: [
+      windows-tests,
+      linux-tests,
+      android-build
+    ]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Get current branch
+      uses : LazyPanda07/extract-current-branch@master
+    
+    - name: Setup release version variable
+      shell: pwsh
+      run: echo "VERSION=$($($($(Select-String -Path src\DatabaseUtility.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+
+    - name: Download artifacts
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: actions/download-artifact@v4
+      
+    - name: Setup Windows build list
+      run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
+      
+    - name: Create Windows zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
+
+    - name: Create Linux zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r linux.zip Release_Linux
+
+    - name: Create Android zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r android.zip Release_Android
+
+    - name: Publish
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: svenstaro/upload-release-action@2.9.0
+      with:
+        tag: v${{ env.VERSION }}
+        release_name: v${{ env.VERSION }}
+        file_glob: true
+        file: "*.zip"

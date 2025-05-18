@@ -48,6 +48,9 @@
     <ClInclude Include="src\Queries\CreateTableQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\DatabaseUtility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DatabaseFactory.cpp">
@@ -78,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Queries\CreateTableQuery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DatabaseUtility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

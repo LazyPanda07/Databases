@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DatabaseFactory.h" />
+    <ClInclude Include="src\DatabaseUtility.h" />
     <ClInclude Include="src\Exceptions\DatabaseException.h" />
     <ClInclude Include="src\Database.h" />
     <ClInclude Include="src\Implementations\SQLiteDatabase.h" />
@@ -25,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DatabaseFactory.cpp" />
+    <ClCompile Include="src\DatabaseUtility.cpp" />
     <ClCompile Include="src\Exceptions\DatabaseException.cpp" />
     <ClCompile Include="src\Database.cpp" />
     <ClCompile Include="src\Implementations\SQLiteDatabase.cpp" />
