@@ -29,7 +29,6 @@ target_include_directories(
 target_link_directories(
 	${PROJECT_NAME} PRIVATE
 	${DATABASES_DIR}/lib/
-	${DATABASES_DIR}/lib/vendor/sqlite3/
 	${GTEST_LIB_DIR}
 )
 
@@ -40,11 +39,10 @@ target_link_libraries(
 	${GTEST_BOTH_LIBRARIES}
 )
 
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
+
 if (UNIX)
 	install(DIRECTORY ${DATABASES_DIR}/lib/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 else()
 	install(DIRECTORY ${DATABASES_DIR}/dll/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 endif()
-
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(DIRECTORY ${DATABASES_DIR}/lib/vendor/sqlite3/ DESTINATION ${CMAKE_INSTALL_PREFIX})
