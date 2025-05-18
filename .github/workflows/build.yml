@@ -174,8 +174,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+
+    - name: Set up GitHub CLI
+      uses: cli/cli-action@v2
 
     - name: Get current branch
       uses : LazyPanda07/extract-current-branch@master
@@ -205,10 +206,5 @@ jobs:
 
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      uses: svenstaro/upload-release-action@2.9.0
-      with:
-        tag: v${{ env.VERSION }}
-        release_name: v${{ env.VERSION }}
-        body: "New version"
-        file_glob: true
-        file: "*.zip"
+      run: gh release create v${{ env.VERSION }} *.zip --title v${{ env.VERSION }} --generate-notes
+        
