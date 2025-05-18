@@ -209,5 +209,6 @@ jobs:
       with:
         tag: v${{ env.VERSION }}
         release_name: v${{ env.VERSION }}
+        body: "New version"
         file_glob: true
         file: "*.zip"
