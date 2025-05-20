@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/Databases CACHE STRING "")
-set(CMAKE_BUILD_TYPE Release CACHE STRING "")|
+set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 
 project(Databases VERSION 1.0.2)
 
