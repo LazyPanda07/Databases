@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.27.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/Databases CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
-set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/vendor/sqlite3/lib)
+set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/vendor/sqlite3/lib PARENT_SCOPE)
 set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/vendor/sqlite3)
 
-project(Databases VERSION 1.0.0)
+project(Databases VERSION 1.0.1)
 
 add_library(
 	${PROJECT_NAME} STATIC 
@@ -28,12 +28,12 @@ if(UNIX)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Android)
+		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Android PARENT_SCOPE)
 		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Android/libsqlite3.so)
 		
 		install(DIRECTORY vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	else()
-		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
+		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux PARENT_SCOPE)
 		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
 
 		add_compile_options(-rdynamic)
@@ -41,7 +41,7 @@ if(UNIX)
 		install(DIRECTORY vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	endif()
 else()
-	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows)
+	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows PARENT_SCOPE)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/dll/sqlite3.dll)
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)
 
