@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <unordered_map>
+#include <mutex>
 
 #include "Table.h"
 #include "Queries/CreateTableQuery.h"
@@ -34,6 +35,7 @@ namespace database
 	protected:
 		std::string databaseName;
 		std::unordered_map<std::string, std::unique_ptr<Table>, StringViewHash, StringViewEqual> tables;
+		mutable std::mutex tablesMutex;
 
 	public:
 		Database(std::string_view databaseName);
