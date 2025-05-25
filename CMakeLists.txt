@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/Databases CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 
-project(Databases VERSION 1.0.2)
+project(Databases VERSION 1.0.3)
 
 set(SQLITE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3/lib CACHE STRING "Path to lib directory")
 set(SQLITE_DLL_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3 CACHE STRING "Path to .dll or .so file")
