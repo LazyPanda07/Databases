@@ -23,7 +23,7 @@ namespace database
 		return tables.try_emplace(table->getTableName(), std::unique_ptr<Table>(table)).first->second;
 	}
 
-	bool Database::contains(std::string_view tableName, Table* outTable) const
+	bool Database::contains(std::string_view tableName, Table** outTable) const
 	{
 		std::unique_lock<std::mutex> lock(tablesMutex);
 		auto it = tables.find(tableName);
@@ -31,7 +31,7 @@ namespace database
 
 		if (outTable && result)
 		{
-			outTable = it->second.get();
+			*outTable = it->second.get();
 		}
 
 		return result;

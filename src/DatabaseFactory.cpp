@@ -55,7 +55,7 @@ namespace database
 
 	Table* createRawTable(std::string_view implementationName, std::string_view tableName, const CreateTableQuery& query, Database* database)
 	{
-		if (Table* temp = nullptr; database->contains(tableName, temp))
+		if (Table* temp = nullptr; database->contains(tableName, &temp))
 		{
 			return temp;
 		}

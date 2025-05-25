@@ -108,3 +108,11 @@ TEST(SQLite, Delete)
 
 	ASSERT_EQ(result.size(), 1);
 }
+
+TEST(SQLite, Contains)
+{
+	database::Table* table = nullptr;
+
+	ASSERT_TRUE(db->contains("test_table", &table));
+	ASSERT_NE(table, nullptr);
+}

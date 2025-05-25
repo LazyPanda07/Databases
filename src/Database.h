@@ -40,7 +40,7 @@ namespace database
 	public:
 		Database(std::string_view databaseName);
 
-		bool contains(std::string_view tableName, Table* outTable = nullptr) const;
+		bool contains(std::string_view tableName, Table** outTable = nullptr) const;
 
 		const std::unique_ptr<Table>& get(std::string_view tableName) const;
 
