@@ -93,9 +93,10 @@ jobs:
         
     - name: Build
       run: |
+          sudo ln -s /usr/bin/aarch64-linux-gnu-gcc /usr/bin/cc
           mkdir build
           cd build
-          ../configure
+          ../configure --host=aarch64-linux-gnu
           make -j $(nproc)
           make sqlite3.c -j $(nproc)
           ${CC} -DSQLITE_THREADSAFE=1 sqlite3.c -shared -O3 -fPIC -lpthread -ldl -o libsqlite3.so
