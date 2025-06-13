@@ -1,7 +1,10 @@
 name: Build SQLite
 
+on:
+  push: 
+    branches: [dev]
 
-on: workflow_dispatch
+# on: workflow_dispatch
 
   
 env:
@@ -94,6 +97,7 @@ jobs:
         
     - name: Build tcl
       run: |
+          sudo apt install -y zlib1g-dev
           cd /root
           wget https://prdownloads.sourceforge.net/tcl/tcl${TCL_VERSION}-src.tar.gz
           tar -xzf tcl${TCL_VERSION}-src.tar.gz
