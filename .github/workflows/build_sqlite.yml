@@ -96,7 +96,7 @@ jobs:
           sudo apt install -y tcl
           mkdir build
           cd build
-          ../configure
+          ../configure --build=aarch64-linux-gnu
           make -j $(nproc)
           make sqlite3.c -j $(nproc)
           ${CC} -DSQLITE_THREADSAFE=1 sqlite3.c -shared -O3 -fPIC -lpthread -ldl -o libsqlite3.so
