@@ -6,6 +6,7 @@ on: workflow_dispatch
   
 env:
   SQLITE_TAG: version-3.50.1
+  TCL_VERSION: 9.0.1
 
 
 jobs:
@@ -91,15 +92,24 @@ jobs:
         repository: sqlite/sqlite
         ref: ${{ env.SQLITE_TAG }}
         
+    - name: Build tcl
+      run: |
+          cd /root
+          wget https://prdownloads.sourceforge.net/tcl/tcl${TCL_VERSION}-src.tar.gz
+          tar -xzf tcl${TCL_VERSION}-src.tar.gz
+          cd tcl${TCL_VERSION}/unix
+          ./configure --host=aarch64-linux-gnu --build=x86_64-pc-linux-gnu --prefix=/usr/aarch64-linux-gnu CC=aarch64-linux-gnu-gcc
+          make -j $(nproc)
+          make install
+
     - name: Build
       run: |
-          sudo apt install -y tcl-dev
           mkdir build
           cd build
           ../configure --host=aarch64-linux-gnu CC=aarch64-linux-gnu-gcc
           make -j $(nproc)
           make sqlite3.c -j $(nproc)
-          ${CC} -DSQLITE_THREADSAFE=1 sqlite3.c -shared -O3 -fPIC -lpthread -ldl -o libsqlite3.so
+          ${CC} -DSQLITE_THREADSAFE=1 sqlite3.c -shared -O3 -fPIC -L /usr/aarch64-linux-gnu/lib -lpthread -ldl -o libsqlite3.so
       
     - name: Prepare
       run: |
