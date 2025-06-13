@@ -104,7 +104,7 @@ jobs:
           cd tcl${TCL_VERSION}/unix
           ./configure --host=aarch64-linux-gnu --build=x86_64-pc-linux-gnu --prefix=/usr/aarch64-linux-gnu CC=aarch64-linux-gnu-gcc
           make -j $(nproc) || true
-          make install
+          make install || true
 
     - name: Build
       run: |
