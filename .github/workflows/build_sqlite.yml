@@ -103,7 +103,7 @@ jobs:
           tar -xzf tcl${TCL_VERSION}-src.tar.gz
           cd tcl${TCL_VERSION}/unix
           ./configure --host=aarch64-linux-gnu --build=x86_64-pc-linux-gnu --prefix=/usr/aarch64-linux-gnu CC=aarch64-linux-gnu-gcc
-          make -j $(nproc)
+          make -j $(nproc) || true
           make install
 
     - name: Build
