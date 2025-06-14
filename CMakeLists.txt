@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/Databases CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 
-project(Databases VERSION 1.0.4)
+project(Databases VERSION 1.1.0)
 
 set(SQLITE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3/lib CACHE STRING "Path to lib directory")
 set(SQLITE_DLL_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3 CACHE STRING "Path to .dll or .so file")
@@ -32,14 +32,21 @@ if(UNIX)
 		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Android PARENT_SCOPE)
 		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Android/libsqlite3.so)
 		
-		install(DIRECTORY vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+		install(DIRECTORY vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)	
 	else()
-		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux PARENT_SCOPE)
-		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
+		if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+			set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/LinuxARM PARENT_SCOPE)
+			set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/LinuxARM/libsqlite3.so)
 
+			install(DIRECTORY vendor/sqlite3/lib/LinuxARM/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+		else()
+			set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux PARENT_SCOPE)
+			set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
+
+			install(DIRECTORY vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+		endif()
+		
 		add_compile_options(-rdynamic)
-
-		install(DIRECTORY vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	endif()
 else()
 	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows PARENT_SCOPE)

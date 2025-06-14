@@ -5,7 +5,8 @@ on: workflow_dispatch
 
   
 env:
-  SQLITE_TAG: version-3.49.2
+  SQLITE_TAG: version-3.50.1
+  TCL_VERSION: 9.0.1
 
 
 jobs:
@@ -77,6 +78,51 @@ jobs:
       with:
         name: sqlite_linux
         path: sqlite_linux
+
+    - name: Prepare sources
+      run: |
+          mv build/sqlite3.c .
+          mv sqlite_linux/include/sqlite3.h .
+
+    - name: Upload SQLite sources
+      uses: actions/upload-artifact@v4
+      with:
+        name: sqlite3_sources
+        path: |
+            sqlite3.c
+            sqlite3.h
+
+
+  linux-aarch64-build:
+    runs-on: ubuntu-latest
+    needs: linux-build
+    container:
+      image: lazypanda07/ubuntu_cxx20:aarch64
+
+    steps:
+    - name: Download SQLite sources
+      uses: actions/download-artifact@v4
+      with:
+        name: sqlite3_sources
+        path: ${{ github.workspace }}
+        
+    - name: Build
+      run: |
+          ls
+          ${CC} -DSQLITE_THREADSAFE=1 sqlite3.c -shared -O3 -fPIC -L /usr/aarch64-linux-gnu/lib -lpthread -ldl -o libsqlite3.so
+      
+    - name: Prepare
+      run: |
+          mkdir -p sqlite_linux_aarch64/lib
+          mkdir sqlite_linux_aarch64/include
+          mv libsqlite3.so sqlite_linux_aarch64/lib
+          mv sqlite3.h sqlite_linux_aarch64/include
+
+    - name: Upload SQLite
+      uses: actions/upload-artifact@v4
+      with:
+        name: sqlite_linux_aarch64
+        path: sqlite_linux_aarch64
 
 
   android-build:
