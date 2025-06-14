@@ -76,19 +76,24 @@ jobs:
           mv build/libsqlite3.so sqlite_linux/lib
           mv build/sqlite3.h sqlite_linux/include
 
-    - name: Upload SQLite sources
-      uses: actions/upload-artifact@v4
-      with:
-        name: sqlite3_sources
-        path: |
-            build/sqlite3.c
-            sqlite_linux/include/sqlite3.h
-
     - name: Upload SQLite
       uses: actions/upload-artifact@v4
       with:
         name: sqlite_linux
         path: sqlite_linux
+
+    - name: Prepare sources
+      run: |
+          mv build/sqlite3.c .
+          mv sqlite_linux/include/sqlite3.h .
+
+    - name: Upload SQLite sources
+      uses: actions/upload-artifact@v4
+      with:
+        name: sqlite3_sources
+        path: |
+            sqlite3.c
+            sqlite3.h
 
 
   linux-aarch64-build:
