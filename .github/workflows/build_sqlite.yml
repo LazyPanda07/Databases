@@ -106,6 +106,7 @@ jobs:
         
     - name: Build
       run: |
+          ls
           ${CC} -DSQLITE_THREADSAFE=1 sqlite3.c -shared -O3 -fPIC -L /usr/aarch64-linux-gnu/lib -lpthread -ldl -o libsqlite3.so
       
     - name: Prepare
