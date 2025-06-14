@@ -76,6 +76,14 @@ jobs:
           mv build/libsqlite3.so sqlite_linux/lib
           mv build/sqlite3.h sqlite_linux/include
 
+    - name: Upload SQLite sources
+      uses: actions/upload-artifact@v4
+      with:
+        name: sqlite3_sources
+        path: |
+            build/sqlite3.c
+            sqlite_linux/include/sqlite3.h
+
     - name: Upload SQLite
       uses: actions/upload-artifact@v4
       with:
@@ -85,42 +93,27 @@ jobs:
 
   linux-aarch64-build:
     runs-on: ubuntu-latest
+    needs: linux-build
     container:
       image: lazypanda07/ubuntu_cxx20:aarch64
 
     steps:
-    - name: Get SQLite
-      uses: actions/checkout@v4
+    - name: Download SQLite sources
+      uses: actions/download-artifact@v4
       with:
-        repository: sqlite/sqlite
-        ref: ${{ env.SQLITE_TAG }}
+        name: sqlite3_sources
+        path: ${{ github.workspace }}
         
-    - name: Build tcl
-      run: |
-          sudo apt install -y zlib1g-dev
-          cd /root
-          wget https://prdownloads.sourceforge.net/tcl/tcl${TCL_VERSION}-src.tar.gz
-          tar -xzf tcl${TCL_VERSION}-src.tar.gz
-          cd tcl${TCL_VERSION}/unix
-          ./configure --host=aarch64-linux-gnu --build=x86_64-pc-linux-gnu --prefix=/usr/aarch64-linux-gnu CC=aarch64-linux-gnu-gcc
-          make -j $(nproc) || true
-          make install || true
-
     - name: Build
       run: |
-          mkdir build
-          cd build
-          ../configure --host=aarch64-linux-gnu CC=aarch64-linux-gnu-gcc
-          make -j $(nproc)
-          make sqlite3.c -j $(nproc)
           ${CC} -DSQLITE_THREADSAFE=1 sqlite3.c -shared -O3 -fPIC -L /usr/aarch64-linux-gnu/lib -lpthread -ldl -o libsqlite3.so
       
     - name: Prepare
       run: |
           mkdir -p sqlite_linux_aarch64/lib
           mkdir sqlite_linux_aarch64/include
-          mv build/libsqlite3.so sqlite_linux_aarch64/lib
-          mv build/sqlite3.h sqlite_linux_aarch64/include
+          mv libsqlite3.so sqlite_linux_aarch64/lib
+          mv sqlite3.h sqlite_linux_aarch64/include
 
     - name: Upload SQLite
       uses: actions/upload-artifact@v4
