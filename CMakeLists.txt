@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/Databases CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 
-project(Databases VERSION 1.1.0)
+project(Databases VERSION 1.2.0)
 
 set(SQLITE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3/lib CACHE STRING "Path to lib directory")
 set(SQLITE_DLL_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3 CACHE STRING "Path to .dll or .so file")
@@ -23,6 +23,10 @@ add_library(
 	src/Queries/RawQuery.cpp
 	src/Queries/CreateTableQuery.cpp
 )
+
+if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")
+	target_compile_options(${PROJECT_NAME} PRIVATE -march=$ENV{MARCH})
+endif()
 
 if(UNIX)
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib)

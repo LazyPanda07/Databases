@@ -17,9 +17,21 @@ namespace database
 		Database(databaseName),
 		connection(nullptr)
 	{
-		if (sqlite3_open(this->getDatabaseFileName().data(), &connection) != SQLITE_OK)
+		if (databaseName.find(":memory:") == std::string_view::npos) // in memory
 		{
-			throw exception::DatabaseException(format("Can't open {}", this->getDatabaseFileName()));
+			std::string fileName = std::format("{}.{}", this->getDatabaseName(), SQLiteDatabase::fileExtension);
+
+			if (sqlite3_open(fileName.data(), &connection) != SQLITE_OK)
+			{
+				throw exception::DatabaseException(format("Can't open {}", fileName));
+			}
+		}
+		else
+		{
+			if (sqlite3_open(this->getDatabaseName().data(), &connection) != SQLITE_OK)
+			{
+				throw exception::DatabaseException(format("Can't open {}", this->getDatabaseName()));
+			}
 		}
 	}
 
@@ -28,9 +40,16 @@ namespace database
 		return connection;
 	}
 
-	std::string SQLiteDatabase::getDatabaseFileName() const
+	std::string_view SQLiteDatabase::getDatabaseFileName() const
 	{
-		return std::format("{}.{}", this->getDatabaseName(), SQLiteDatabase::fileExtension);
+		sqlite3_filename result = sqlite3_db_filename(connection, this->getDatabaseName().data());
+
+		if (result)
+		{
+			return std::string_view(result);
+		}
+
+		return "";
 	}
 
 	SQLiteDatabase::~SQLiteDatabase()

@@ -44,9 +44,9 @@ namespace database
 
 		const std::unique_ptr<Table>& get(std::string_view tableName) const;
 
-		const std::string& getDatabaseName() const;
+		std::string_view getDatabaseName() const;
 
-		virtual std::string getDatabaseFileName() const = 0;
+		virtual std::string_view getDatabaseFileName() const = 0;
 
 		virtual ~Database() = default;
 

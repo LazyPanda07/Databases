@@ -56,7 +56,7 @@ namespace database
 
 	}
 
-	const std::string& Database::getDatabaseName() const
+	std::string_view Database::getDatabaseName() const
 	{
 		return databaseName;
 	}
