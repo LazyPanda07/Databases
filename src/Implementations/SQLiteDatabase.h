@@ -25,7 +25,7 @@ namespace database
 
 		sqlite3* operator *() const;
 
-		std::string getDatabaseFileName() const override;
+		std::string_view getDatabaseFileName() const override;
 
 		~SQLiteDatabase();
 	};
