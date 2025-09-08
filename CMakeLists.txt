@@ -6,7 +6,6 @@ set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 project(Databases VERSION 1.2.1)
 
 set(SQLITE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3/lib CACHE STRING "Path to lib directory")
-set(SQLITE_DLL_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3 CACHE STRING "Path to .dll or .so file")
 
 add_library(
 	${PROJECT_NAME} STATIC 
@@ -33,30 +32,27 @@ if(UNIX)
 
 	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Android PARENT_SCOPE)
-		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Android/libsqlite3.so)
 		
-		install(DIRECTORY vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)	
+		install(DIRECTORY vendor/sqlite3/lib/Android/ DESTINATION lib)	
 	else()
 		if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
 			set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/LinuxARM PARENT_SCOPE)
-			set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/LinuxARM/libsqlite3.so)
 
-			install(DIRECTORY vendor/sqlite3/lib/LinuxARM/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+			install(DIRECTORY vendor/sqlite3/lib/LinuxARM/ DESTINATION lib)
 		else()
 			set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux PARENT_SCOPE)
-			set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
 
-			install(DIRECTORY vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+			install(DIRECTORY vendor/sqlite3/lib/Linux/ DESTINATION lib)
 		endif()
 		
 		add_compile_options(-rdynamic)
 	endif()
 else()
 	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows PARENT_SCOPE)
-	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/dll/sqlite3.dll)
 	set(SQLITE_DLL_DESTINATION_PATH dll)
 
-	install(DIRECTORY vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+	install(DIRECTORY vendor/sqlite3/lib/Windows/ DESTINATION lib)
+	install(FILES ${PROJECT_SOURCE_DIR}/vendor/sqlite3/dll/sqlite3.dll DESTINATION dll)
 endif()
 
 target_include_directories(
@@ -67,10 +63,9 @@ target_include_directories(
 
 install(
 	TARGETS ${PROJECT_NAME} 
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+	ARCHIVE DESTINATION lib
+	LIBRARY DESTINATION lib
 )
 
-install(DIRECTORY src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")
-install(FILES ${SQLITE_DLL_PATH} DESTINATION .)
-install(DIRECTORY vendor/sqlite3/license DESTINATION license)
+install(DIRECTORY src/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY vendor/sqlite3/license/ DESTINATION license)
