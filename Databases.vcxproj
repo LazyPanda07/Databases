@@ -11,18 +11,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\DatabaseFactory.h" />
-    <ClInclude Include="src\DatabaseUtility.h" />
-    <ClInclude Include="src\Exceptions\DatabaseException.h" />
-    <ClInclude Include="src\Database.h" />
-    <ClInclude Include="src\Implementations\SQLiteDatabase.h" />
-    <ClInclude Include="src\Implementations\SQLiteTable.h" />
-    <ClInclude Include="src\Queries\CreateTableQuery.h" />
-    <ClInclude Include="src\Queries\IQuery.h" />
-    <ClInclude Include="src\Queries\RawQuery.h" />
-    <ClInclude Include="src\SQLResult.h" />
-    <ClInclude Include="src\SQLValue.h" />
-    <ClInclude Include="src\Table.h" />
+    <ClInclude Include="include\DatabaseFactory.h" />
+    <ClInclude Include="include\DatabaseUtility.h" />
+    <ClInclude Include="include\Exceptions\DatabaseException.h" />
+    <ClInclude Include="include\Database.h" />
+    <ClInclude Include="include\Implementations\SQLiteDatabase.h" />
+    <ClInclude Include="include\Implementations\SQLiteTable.h" />
+    <ClInclude Include="include\Queries\CreateTableQuery.h" />
+    <ClInclude Include="include\Queries\IQuery.h" />
+    <ClInclude Include="include\Queries\RawQuery.h" />
+    <ClInclude Include="include\SQLResult.h" />
+    <ClInclude Include="include\SQLValue.h" />
+    <ClInclude Include="include\Table.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DatabaseFactory.cpp" />
@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -86,7 +86,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

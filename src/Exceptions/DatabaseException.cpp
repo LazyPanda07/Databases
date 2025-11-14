@@ -1,4 +1,4 @@
-#include "DatabaseException.h"
+#include "Exceptions/DatabaseException.h"
 
 namespace database::exception
 {

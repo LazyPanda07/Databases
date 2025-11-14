@@ -4,7 +4,7 @@ namespace database::utility
 {
 	constexpr std::string_view getVersion()
 	{
-		constexpr std::string_view version = "1.2.1";
+		constexpr std::string_view version = "1.3.0";
 
 		return version;
 	}

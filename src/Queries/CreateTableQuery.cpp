@@ -1,4 +1,4 @@
-#include "CreateTableQuery.h"
+#include "Queries/CreateTableQuery.h"
 
 #include <algorithm>
 #include <iterator>
