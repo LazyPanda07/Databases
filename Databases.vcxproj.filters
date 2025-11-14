@@ -15,40 +15,40 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\DatabaseFactory.h">
+    <ClInclude Include="include\DatabaseFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Database.h">
+    <ClInclude Include="include\Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Table.h">
+    <ClInclude Include="include\Table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Implementations\SQLiteDatabase.h">
+    <ClInclude Include="include\Implementations\SQLiteDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Implementations\SQLiteTable.h">
+    <ClInclude Include="include\Implementations\SQLiteTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\DatabaseException.h">
+    <ClInclude Include="include\Exceptions\DatabaseException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Queries\IQuery.h">
+    <ClInclude Include="include\Queries\IQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SQLValue.h">
+    <ClInclude Include="include\SQLValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SQLResult.h">
+    <ClInclude Include="include\SQLResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Queries\RawQuery.h">
+    <ClInclude Include="include\Queries\RawQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Queries\CreateTableQuery.h">
+    <ClInclude Include="include\Queries\CreateTableQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DatabaseUtility.h">
+    <ClInclude Include="include\DatabaseUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

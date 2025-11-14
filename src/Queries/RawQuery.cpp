@@ -1,4 +1,4 @@
-#include "RawQuery.h"
+#include "Queries/RawQuery.h"
 
 namespace database
 {

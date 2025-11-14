@@ -5,7 +5,7 @@ on: workflow_dispatch
 
   
 env:
-  SQLITE_TAG: version-3.50.1
+  SQLITE_TAG: version-3.51.0
   TCL_VERSION: 9.0.1
 
 
