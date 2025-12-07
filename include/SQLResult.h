@@ -33,9 +33,9 @@ namespace database
 
 		operator const ValueType& () const;
 
-		std::unordered_map<std::string, SQLValue>& operator[](size_t index);
+		std::unordered_map<std::string, SQLValue>& operator [](size_t index);
 
-		const std::unordered_map<std::string, SQLValue>& operator[](size_t index) const;
+		const std::unordered_map<std::string, SQLValue>& operator [](size_t index) const;
 
 		~SQLResult() = default;
 	};

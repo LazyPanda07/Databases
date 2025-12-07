@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 
-project(Databases VERSION 1.3.0)
+project(Databases VERSION 1.3.1)
 
-set(SQLITE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3/lib CACHE STRING "Path to lib directory")
+set(SQLITE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3/lib CACHE STRING "Path to sqlite3 lib directory")
 
 add_library(
 	${PROJECT_NAME} STATIC 

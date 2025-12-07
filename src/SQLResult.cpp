@@ -42,12 +42,12 @@ namespace database
 		return rows;
 	}
 
-	std::unordered_map<std::string, SQLValue>& SQLResult::operator[](size_t index)
+	std::unordered_map<std::string, SQLValue>& SQLResult::operator [](size_t index)
 	{
 		return rows[index];
 	}
 
-	const std::unordered_map<std::string, SQLValue>& SQLResult::operator[](size_t index) const
+	const std::unordered_map<std::string, SQLValue>& SQLResult::operator [](size_t index) const
 	{
 		return rows[index];
 	}

@@ -2,7 +2,7 @@
 
 #include <format>
 
-#include "sqlite3.h"
+#include <sqlite3.h>
 
 #include "Implementations/SQLiteDatabase.h"
 #include "Exceptions/DatabaseException.h"
