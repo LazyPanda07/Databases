@@ -6,7 +6,7 @@
 
 namespace database
 {
-	size_t Database::StringViewHash::operator()(std::string_view value) const
+	size_t Database::StringViewHash::operator ()(std::string_view value) const
 	{
 		return std::hash<std::string_view>()(value);
 	}
@@ -18,14 +18,14 @@ namespace database
 
 	const std::unique_ptr<Table>& Database::addTable(Table* table)
 	{
-		std::unique_lock<std::mutex> lock(tablesMutex);
+		std::lock_guard<std::mutex> lock(tablesMutex);
 
 		return tables.try_emplace(table->getTableName(), std::unique_ptr<Table>(table)).first->second;
 	}
 
 	bool Database::contains(std::string_view tableName, Table** outTable) const
 	{
-		std::unique_lock<std::mutex> lock(tablesMutex);
+		std::lock_guard<std::mutex> lock(tablesMutex);
 		auto it = tables.find(tableName);
 		bool result = it != tables.end();
 
@@ -39,7 +39,7 @@ namespace database
 
 	const std::unique_ptr<Table>& Database::get(std::string_view tableName) const
 	{
-		std::unique_lock<std::mutex> lock(tablesMutex);
+		std::lock_guard<std::mutex> lock(tablesMutex);
 		auto it = tables.find(tableName);
 
 		if (it == tables.end())
