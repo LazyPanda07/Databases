@@ -41,10 +41,11 @@ build/
 out/
 Databases
 
-# GTest
-Tests/gtest
-
 # SQLite
 !libsqlite3.so
 !sqlite3.dll
 !sqlite3.lib
+
+# Hiredis
+!libhiredis.a
+!hiredis.lib
