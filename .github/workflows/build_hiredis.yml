@@ -1,0 +1,46 @@
+name: Build Hiredis
+
+
+on: workflow_dispatch
+
+  
+env:
+  HIREDIS_TAG: v1.3.0
+
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        config:
+          - { os: windows-latest, artifact-name: hiredis-windows, additional-cmake-parameters: "", image: "" }
+          - { os: ubuntu-latest, artifact-name: hiredis-linux, additional-cmake-parameters: "", image: lazypanda07/ubuntu_cxx20:24.04 }
+          - { os: ubuntu-latest, artifact-name: hiredis-aarch64-linux, additional-cmake-parameters: "-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake", image: lazypanda07/ubuntu_cxx20:aarch64 }
+    runs-on: ${{ matrix.config.os }}
+    container:
+      image: ${{ matrix.config.image }}
+      
+    steps:
+    - uses: checkout@v6
+      with:
+        repository: redis/hiredis
+        ref: ${{ env.HIREDIS_TAG }}
+  
+    - name: Enable NMake
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+    
+    - name: Build
+      shell: bash
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install-dir ${{ matrix.config.additional-cmake-parameters }} ..
+        cmake --build . -j --config Release
+        cmake --install . --config Release
+
+    - name: Upload ${{ matrix.config.artifact-name }}
+      uses: actions/upload-artifact@v6
+      with:
+        name: ${{ matrix.config.artifact-name }}
+        path: build/install-dir
