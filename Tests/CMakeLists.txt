@@ -38,6 +38,7 @@ target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	Databases
 	sqlite3
+	hiredis
 	gtest
 	gtest_main
 )
