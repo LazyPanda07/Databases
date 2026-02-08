@@ -34,6 +34,11 @@ jobs:
       if: ${{ matrix.config.os == 'windows-latest' }}
       uses: ilammy/msvc-dev-cmd@v1.13.0
     
+    - name: Create AArch64 toolchain
+      if: ${{ contains(matrix.config.artifact-name, 'aarch64-linux') }}
+      shell: bash
+      run: echo -e "set(CMAKE_SYSTEM_NAME Linux)\nset(CMAKE_SYSTEM_PROCESSOR aarch64)\nset(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)\nset(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)\n" > toolchain-aarch64.cmake
+
     - name: Export Android build parameters
       if: ${{ contains(matrix.config.artifact-name, 'android') }}
       shell: bash
