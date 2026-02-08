@@ -17,6 +17,8 @@ add_library(
 	src/DatabaseUtility.cpp
 	src/Implementations/SQLiteDatabase.cpp
 	src/Implementations/SQLiteTable.cpp
+	src/Implementations/RedisDatabase.cpp
+	src/Implementations/RedisTable.cpp
 	src/Exceptions/DatabaseException.cpp
 	src/Queries/RawQuery.cpp
 	src/Queries/CreateTableQuery.cpp

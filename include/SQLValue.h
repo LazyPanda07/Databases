@@ -27,6 +27,8 @@ namespace database
 
 		const ValueType& operator *() const;
 
+		const ValueType* operator ->() const;
+
 		template<OneOf T>
 		const T& get() const;
 

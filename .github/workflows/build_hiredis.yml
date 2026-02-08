@@ -1,10 +1,7 @@
 name: Build Hiredis
 
 
-# on: workflow_dispatch
-on:
-  push:
-    branches: [dev]
+on: workflow_dispatch
   
     
 env:

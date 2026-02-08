@@ -12,5 +12,6 @@ namespace database
 	namespace implementation
 	{
 		constexpr std::string_view sqlite = "sqlite";
+		constexpr std::string_view redis = "redis";
 	}
 }

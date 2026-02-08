@@ -5,16 +5,21 @@
 #include <array>
 
 #include "Implementations/SQLiteDatabase.h"
-#include "Implementations/SQLiteTable.h"
+#include "Implementations/RedisDatabase.h"
 
-static constexpr std::array<std::pair<std::string_view, database::Database* (*)(std::string_view)>, 1> createDatabaseFunctions =
+#include "Implementations/SQLiteTable.h"
+#include "Implementations/RedisTable.h"
+
+static constexpr std::array<std::pair<std::string_view, database::Database* (*)(std::string_view)>, 2> createDatabaseFunctions =
 {
-	std::make_pair(database::SQLiteDatabase::implementationName, &database::SQLiteDatabase::createDatabase)
+	std::make_pair(database::SQLiteDatabase::implementationName, &database::SQLiteDatabase::createDatabase),
+	std::make_pair(database::RedisDatabase::implementationName, &database::RedisDatabase::createDatabase)
 };
 
-static constexpr std::array<std::pair<std::string_view, database::Table* (*)(std::string_view, const database::CreateTableQuery&, database::Database* database)>, 1> createTableFunctions =
+static constexpr std::array<std::pair<std::string_view, database::Table* (*)(std::string_view, const database::CreateTableQuery&, database::Database* database)>, 2> createTableFunctions =
 {
-	std::make_pair(database::SQLiteTable::implementationName, &database::SQLiteTable::createTable)
+	std::make_pair(database::SQLiteTable::implementationName, &database::SQLiteTable::createTable),
+	std::make_pair(database::RedisTable::implementationName, &database::RedisTable::createTable)
 };
 
 namespace database

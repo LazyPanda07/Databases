@@ -14,9 +14,9 @@ namespace database
 		return **static_cast<SQLiteDatabase*>(database);
 	}
 
-	Table* SQLiteTable::createTable(std::string_view databaseName, const CreateTableQuery& query, Database* database)
+	Table* SQLiteTable::createTable(std::string_view tableName, const CreateTableQuery& query, Database* database)
 	{
-		return new SQLiteTable(databaseName, query, database);
+		return new SQLiteTable(tableName, query, database);
 	}
 
 	SQLiteTable::SQLiteTable(std::string_view tableName, const CreateTableQuery& query, Database* database) :
@@ -56,27 +56,27 @@ namespace database
 
 		for (size_t i = 0; i < values.size(); i++, currentIndex++)
 		{
-			const SQLValue::ValueType& value = *values[i];
+			const SQLValue& value = values[i];
 
-			switch (value.index())
+			switch (value->index())
 			{
 			case 0: // int64_t
-				sqlite3_bind_int64(statement, currentIndex, std::get<int64_t>(value));
+				sqlite3_bind_int64(statement, currentIndex, value.get<int64_t>());
 
 				break;
 
 			case 1: // double
-				sqlite3_bind_double(statement, currentIndex, std::get<double>(value));
+				sqlite3_bind_double(statement, currentIndex, value.get<double>());
 
 				break;
 
 			case 2: // std::string
-				sqlite3_bind_text(statement, currentIndex, std::get<std::string>(value).data(), -1, SQLITE_STATIC);
+				sqlite3_bind_text(statement, currentIndex, value.get<std::string>().data(), -1, SQLITE_STATIC);
 
 				break;
 
 			case 3: // bool
-				sqlite3_bind_int(statement, currentIndex, std::get<bool>(value));
+				sqlite3_bind_int(statement, currentIndex, value.get<bool>());
 
 				break;
 
@@ -87,7 +87,7 @@ namespace database
 
 			case 5: // blob
 			{
-				const std::vector<uint8_t>& blob = std::get<std::vector<uint8_t>>(value);
+				const std::vector<uint8_t>& blob = value.get<std::vector<uint8_t>>();
 
 				sqlite3_bind_blob(statement, currentIndex, blob.data(), static_cast<int>(blob.size()), SQLITE_STATIC);
 			}
@@ -95,7 +95,7 @@ namespace database
 			break;
 
 			default:
-				throw exception::DatabaseException(std::format("Wrong index: {}", value.index()));
+				throw exception::DatabaseException(std::format("Wrong index: {}", value->index()));
 			}
 		}
 

@@ -26,4 +26,9 @@ namespace database
 	{
 		return value;
 	}
+
+	const SQLValue::ValueType* SQLValue::operator ->() const
+	{
+		return &value;
+	}
 }
