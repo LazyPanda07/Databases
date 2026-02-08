@@ -1,9 +1,12 @@
 name: Build Hiredis
 
 
-on: workflow_dispatch
-
+# on: workflow_dispatch
+on:
+  push:
+    branches: [dev]
   
+    
 env:
   HIREDIS_TAG: v1.3.0
 
@@ -16,6 +19,7 @@ jobs:
           - { os: windows-latest, artifact-name: hiredis-windows, additional-cmake-parameters: "", image: "" }
           - { os: ubuntu-latest, artifact-name: hiredis-linux, additional-cmake-parameters: "", image: lazypanda07/ubuntu_cxx20:24.04 }
           - { os: ubuntu-latest, artifact-name: hiredis-aarch64-linux, additional-cmake-parameters: "-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake", image: lazypanda07/ubuntu_cxx20:aarch64 }
+          - { os: ubuntu-latest, artifact-name: hiredis-android, additional-cmake-parameters: "", image: lazypanda07/ubuntu_cxx20:android }
     runs-on: ${{ matrix.config.os }}
     container:
       image: ${{ matrix.config.image }}
@@ -30,6 +34,11 @@ jobs:
       if: ${{ matrix.config.os == 'windows-latest' }}
       uses: ilammy/msvc-dev-cmd@v1.13.0
     
+    - name: Export Android build parameters
+      if: ${{ contains(matrix.config.artifact-name, 'android') }}
+      shell: bash
+      run: echo "additional-cmake-parameters=${ANDROID_CMAKE_BUILD_ARGUMENTS}" >> ${GITHUB_ENV}
+
     - name: Build
       shell: bash
       run: |
