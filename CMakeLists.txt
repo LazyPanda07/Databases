@@ -68,3 +68,4 @@ install(
 
 install(DIRECTORY include DESTINATION .)
 install(DIRECTORY vendor/sqlite3/license/ DESTINATION license)
+install(DIRECTORY vendor/hiredis/license/ DESTINATION license)
