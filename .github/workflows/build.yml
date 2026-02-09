@@ -141,6 +141,7 @@ jobs:
       with:
         repository: redis-windows/redis-windows
         extract: true
+        tag: ${{ env.REDIS_VERSION }}
         fileName: Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2.zip
 
     - name: Redis directory
