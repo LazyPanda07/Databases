@@ -16,7 +16,7 @@ public:
 
 using ReplyPointer = std::unique_ptr<redisReply, RedisReplyDeleter>;
 
-static std::unordered_map<std::string, database::SQLValue> makeRow(const database::SQLValue::ValueType& value);
+static database::SQLValue::ValueType parseCommonValueType(const redisReply& reply);
 
 namespace database
 {
@@ -36,6 +36,8 @@ namespace database
 	SQLResult RedisTable::execute(const IQuery& query, const std::vector<SQLValue>& values)
 	{
 		// TODO: multi threading
+
+		static std::vector<std::string> indices;
 
 		SQLResult result;
 		redisContext* context = **static_cast<RedisDatabase*>(database);
@@ -108,57 +110,40 @@ namespace database
 			throw exception::DatabaseException(std::format("Can't process command {}. Error message: {}", query.getQuery(), reply->str));
 		}
 
-		switch (reply->type)
+		std::unordered_map<std::string, SQLValue> row;
+
+		if (reply->type == REDIS_REPLY_ARRAY || reply->type == REDIS_REPLY_SET)
 		{
-		case REDIS_REPLY_STRING:
-		case REDIS_REPLY_STATUS:
-		case REDIS_REPLY_BIGNUM: // large number as string
-		case REDIS_REPLY_VERB:
+			if (indices.size() < reply->elements)
+			{
+				for (size_t i = indices.size(); i < reply->elements; i++)
+				{
+					indices.emplace_back(std::to_string(i));
+				}
+			}
 
-			result.addRow(makeRow(reply->str));
-
-			break;
-
-		case REDIS_REPLY_ARRAY:
-			// TODO: parse array
-
-			break;
-
-		case REDIS_REPLY_INTEGER:
-			result.addRow(makeRow(reply->integer));
-
-			break;
-
-		case REDIS_REPLY_NIL:
-			result.addRow(makeRow(nullptr));
-
-			break;
-
-		case REDIS_REPLY_DOUBLE:
-			result.addRow(makeRow(reply->dval));
-
-			break;
-
-		case REDIS_REPLY_BOOL:
-			result.addRow(makeRow(static_cast<bool>(reply->integer)));
-
-			break;
-
-		case REDIS_REPLY_MAP:
-			// TODO: parse map
-
-			break;
-
-		case REDIS_REPLY_SET:
-			// TODO: parse set
-
-			break;
-
-		case REDIS_REPLY_ATTR:
-		case REDIS_REPLY_PUSH:
-		default:
-			throw exception::DatabaseException(std::format("Wrong type: {}", reply->type));
+			for (size_t i = 0; i < reply->elements; i++)
+			{
+				row.emplace(indices[i], parseCommonValueType(*reply->element[i]));
+			}
 		}
+		else if (reply->type == REDIS_REPLY_MAP)
+		{
+			for (size_t i = 0; i < reply->elements; i += 2)
+			{
+				row.emplace
+				(
+					std::get<std::string>(parseCommonValueType(*reply->element[i])),
+					parseCommonValueType(*reply->element[i + 1])
+				);
+			}
+		}
+		else
+		{
+			row.emplace("", parseCommonValueType(*reply));
+		}
+
+		result.addRow(std::move(row));
 
 		return result;
 	}
@@ -172,13 +157,34 @@ void RedisReplyDeleter::operator ()(redisReply* reply) const noexcept
 	}
 }
 
-static std::unordered_map<std::string, database::SQLValue> makeRow(const database::SQLValue::ValueType& value)
+database::SQLValue::ValueType parseCommonValueType(const redisReply& reply)
 {
-	return 
-		std::unordered_map<std::string, database::SQLValue>
-		(
-			{
-				{ "", database::SQLValue(value) }
-			}
-		);
+	switch (reply.type)
+	{
+	case REDIS_REPLY_STRING:
+	case REDIS_REPLY_STATUS:
+	case REDIS_REPLY_BIGNUM: // large number as string
+	case REDIS_REPLY_VERB:
+
+		return reply.str;
+
+	case REDIS_REPLY_INTEGER:
+		return reply.integer;
+
+	case REDIS_REPLY_NIL:
+		return nullptr;
+
+	case REDIS_REPLY_DOUBLE:
+		return reply.dval;
+
+	case REDIS_REPLY_BOOL:
+		return static_cast<bool>(reply.integer);
+
+	case REDIS_REPLY_ATTR:
+	case REDIS_REPLY_PUSH:
+	default:
+		throw database::exception::DatabaseException(std::format("Wrong type: {} in {}", reply.type, __func__));
+	}
+
+	return nullptr;
 }
