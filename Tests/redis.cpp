@@ -1,16 +1,19 @@
 #include <gtest/gtest.h>
 
+#include <chrono>
+#include <thread>
+
 #include <DatabaseFactory.h>
 #include <Implementations/RedisDatabase.h>
 #include <Implementations/RedisTable.h>
 #include <Queries/CreateTableQuery.h>
-#include <Exceptions/DatabaseException.h>
 
 static std::shared_ptr<database::Database> db;
 
-#ifndef _WIN32
 TEST(Redis, CreateDatabase)
 {
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+
 	ASSERT_NO_THROW(db = database::createDatabase<database::RedisDatabase>("127.0.0.1:8080:password"));
 }
 
@@ -139,4 +142,3 @@ TEST(Redis, Mget)
 	ASSERT_EQ(result.at("2").get<std::string>(), "second");
 	ASSERT_EQ(result.at("3").get<bool>(), false);
 }
-#endif

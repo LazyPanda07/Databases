@@ -130,8 +130,23 @@ jobs:
       matrix:
         configuration: [Debug, Release]
 
+    env:
+      REDIS_VERSION: 7.4.6
+
     steps:
     - uses: actions/checkout@v6
+
+    - name: Get Redis
+      uses: robinraju/release-downloader@v1.11
+      with:
+        repository: redis-windows/redis-windows
+        extract: true
+        fileName: Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2.zip
+
+    - name: Redis directory
+      shell: bash
+      run: |
+        ls Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2
 
     - name: Download artifacts
       uses: actions/download-artifact@v6
@@ -152,9 +167,10 @@ jobs:
           cmake --install .
 
     - name: Tests
-      working-directory: Tests
+      working-directory: Tests/build/bin
+      shell: cmd
       run: |
-          cd build/bin
+          start ${{ env.GITHUB_WORKSPACE }}\Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2\redis-server --port 8080 --requirepass password
           .\Tests.exe
 
 
