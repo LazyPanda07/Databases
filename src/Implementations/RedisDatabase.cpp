@@ -77,6 +77,11 @@ namespace database
 		}
 	}
 
+	std::mutex& RedisDatabase::getContextMutex()
+	{
+		return contextMutex;
+	}
+
 	redisContext* RedisDatabase::operator *() const
 	{
 		return context;

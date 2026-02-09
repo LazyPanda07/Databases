@@ -19,6 +19,7 @@ namespace database
 
 	private:
 		redisContext* context;
+		std::mutex contextMutex;
 
 	public:
 		/**
@@ -26,6 +27,8 @@ namespace database
 		 * @param ipAndPort A string view containing the server address and port, typically in the form "host:port" (for example "127.0.0.1:6379" or "redis.example.com:6379").
 		 */
 		RedisDatabase(std::string_view connectString);
+
+		std::mutex& getContextMutex();
 
 		redisContext* operator *() const;
 

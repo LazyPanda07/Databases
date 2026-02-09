@@ -43,10 +43,12 @@ namespace database
 		static std::vector<std::string> indices;
 
 		SqlResult result;
-		redisContext* context = **static_cast<RedisDatabase*>(database);
+		RedisDatabase& redisDatabase = *static_cast<RedisDatabase*>(database);
+		redisContext* context = *redisDatabase;
 		std::vector<const char*> argv;
 		std::vector<size_t> argvlen;
 		std::vector<std::string> temp;
+		ReplyPointer reply;
 
 		if (std::string_view queryData = query.getQuery(); queryData.size())
 		{
@@ -101,16 +103,20 @@ namespace database
 		argv.reserve(temp.size());
 
 		std::ranges::for_each(temp, [&argv](const std::string& value) { argv.emplace_back(value.data()); });
-
-		ReplyPointer reply(static_cast<redisReply*>(redisCommandArgv(context, static_cast<int>(argv.size()), argv.data(), argvlen.data())));
-
-		if (!reply)
+		
 		{
-			throw exception::DatabaseException(std::format("Can't process command {}. Error message: {}", query.getQuery(), context->errstr));
-		}
-		else if (reply->type == REDIS_REPLY_ERROR)
-		{
-			throw exception::DatabaseException(std::format("Can't process command {}. Error message: {}", query.getQuery(), reply->str));
+			std::lock_guard<std::mutex> lock(redisDatabase.getContextMutex());
+
+			reply.reset(static_cast<redisReply*>(redisCommandArgv(context, static_cast<int>(argv.size()), argv.data(), argvlen.data())));
+
+			if (!reply)
+			{
+				throw exception::DatabaseException(std::format("Can't process command {}. Error message: {}", query.getQuery(), context->errstr));
+			}
+			else if (reply->type == REDIS_REPLY_ERROR)
+			{
+				throw exception::DatabaseException(std::format("Can't process command {}. Error message: {}", query.getQuery(), reply->str));
+			}
 		}
 
 		std::unordered_map<std::string, SqlValue> row;

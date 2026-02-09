@@ -143,12 +143,7 @@ jobs:
         extract: true
         tag: ${{ env.REDIS_VERSION }}
         fileName: Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2.zip
-
-    - name: Redis directory
-      shell: bash
-      run: |
-        ls Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2
-
+        
     - name: Download artifacts
       uses: actions/download-artifact@v6
       with:
@@ -171,7 +166,7 @@ jobs:
       working-directory: Tests/build/bin
       shell: cmd
       run: |
-          start ${{ env.GITHUB_WORKSPACE }}\Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2\redis-server --port 8080 --requirepass password
+          start ${{ github.workspace }}\Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2\redis-server --port 8080 --requirepass password
           .\Tests.exe
 
 
