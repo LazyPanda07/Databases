@@ -18,7 +18,7 @@ TEST(Redis, CreateTable)
 {
 	ASSERT_NO_THROW
 	(
-		(database::createTable<database::RedisTable>("", db, ""))
+		(database::createTable<database::RedisTable, database::CreateTableQuery>("", db, ""))
 	);
 }
 

@@ -17,7 +17,7 @@ namespace database
 	template<std::derived_from<Database> T>
 	std::shared_ptr<Database> createDatabase(std::string_view databaseName);
 
-	template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> QueryT = CreateTableQuery, typename... Args>
+	template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> QueryT, typename... Args>
 	const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database, Args&&... args);
 }
 

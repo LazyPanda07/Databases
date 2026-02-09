@@ -17,7 +17,7 @@ TEST(SQLite, CreateTable)
 {
 	ASSERT_NO_THROW
 	(
-		(database::createTable<database::SqliteTable>(
+		(database::createTable<database::SqliteTable, database::CreateTableQuery>(
 			"test_table",
 			db,
 			"CREATE TABLE IF NOT EXISTS test_table (id INTEGER PRIMARY KEY AUTOINCREMENT, doubleValue DOUBLE NOT NULL, textValue TEXT NOT NULL UNIQUE, boolValue BOOLEAN NOT NULL, data BLOB)"
