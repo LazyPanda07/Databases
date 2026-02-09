@@ -51,7 +51,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install-dir -DBUILD_SHARED_LIBS=OFF ${{ env.ADDITIONAL_CMAKE_PARAMETERS }} ..
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install-dir -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS=OFF ${{ env.ADDITIONAL_CMAKE_PARAMETERS }} ..
         cmake --build . -j --config Release
         cmake --install . --config Release
 
