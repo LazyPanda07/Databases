@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 
-project(Databases VERSION 1.3.1)
+project(Databases VERSION 1.4.0)
 
 set(SQLITE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3/lib CACHE STRING "Path to sqlite3 lib directory")
 set(HIREDIS_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/hiredis/lib CACHE STRING "Path to hiredis lib directory")
@@ -70,6 +70,18 @@ target_include_directories(
 	include/
 	vendor/sqlite3/include/
 	vendor/hiredis/include/
+)
+
+target_link_directories(
+	${PROJECT_NAME} PUBLIC
+	${SQLITE_LIBRARY_PATH}
+	${HIREDIS_LIBRARY_PATH}
+)
+
+target_link_libraries(
+	${PROJECT_NAME} PUBLIC
+	sqlite3
+	hiredis
 )
 
 install(

@@ -38,8 +38,6 @@ namespace database
 
 	SqlResult RedisTable::execute(const IQuery& query, const std::vector<SqlValue>& values)
 	{
-		// TODO: multi threading
-
 		static std::vector<std::string> indices;
 
 		SqlResult result;
