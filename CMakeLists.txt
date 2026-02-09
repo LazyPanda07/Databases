@@ -12,11 +12,11 @@ add_library(
 	src/Database.cpp
 	src/Table.cpp
 	src/DatabaseFactory.cpp
-	src/SQLValue.cpp
-	src/SQLResult.cpp
+	src/SqlValue.cpp
+	src/SqlResult.cpp
 	src/DatabaseUtility.cpp
-	src/Implementations/SQLiteDatabase.cpp
-	src/Implementations/SQLiteTable.cpp
+	src/Implementations/SqliteDatabase.cpp
+	src/Implementations/SqliteTable.cpp
 	src/Implementations/RedisDatabase.cpp
 	src/Implementations/RedisTable.cpp
 	src/Exceptions/DatabaseException.cpp

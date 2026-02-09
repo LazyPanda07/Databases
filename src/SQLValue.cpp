@@ -1,33 +1,19 @@
-#include "SQLValue.h"
+#include "SqlValue.h"
 
 namespace database
 {
-	SQLValue::SQLValue(const ValueType& value) :
-		value(value)
+	SqlValue::SqlValue(size_t value) :
+		value(static_cast<int64_t>(value))
 	{
 
 	}
 
-	SQLValue& SQLValue::operator = (const ValueType& value)
-	{
-		this->value = value;
-
-		return *this;
-	}
-
-	SQLValue& SQLValue::operator = (ValueType&& value) noexcept
-	{
-		this->value = std::move(value);
-
-		return *this;
-	}
-
-	const SQLValue::ValueType& SQLValue::operator *() const
+	const SqlValue::ValueType& SqlValue::operator *() const
 	{
 		return value;
 	}
 
-	const SQLValue::ValueType* SQLValue::operator ->() const
+	const SqlValue::ValueType* SqlValue::operator ->() const
 	{
 		return &value;
 	}

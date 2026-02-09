@@ -2,29 +2,30 @@
 
 #include "Table.h"
 
-#include "Queries/CreateTableQuery.h"
+#include "Queries/IQuery.h"
 #include "DatabaseUtility.h"
 
 typedef struct sqlite3 sqlite3;
 
 namespace database
 {
-	class SQLiteTable : public Table
+	class SqliteTable : public Table
 	{
 	public:
 		static inline constexpr std::string_view implementationName = implementation::sqlite;
+		static inline constexpr bool supportsTables = true;
 
 	public:
-		static Table* createTable(std::string_view tableName, const CreateTableQuery& query, Database* database);
+		static Table* createTable(std::string_view tableName, const IQuery& query, Database* database);
 
 	private:
 		sqlite3* getConnection() const;
 
 	public:
-		SQLiteTable(std::string_view tableName, const CreateTableQuery& query, Database* database);
+		SqliteTable(std::string_view tableName, const IQuery& query, Database* database);
 
-		SQLResult execute(const IQuery& query, const std::vector<SQLValue>& values) override;
+		SqlResult execute(const IQuery& query, const std::vector<SqlValue>& values) override;
 
-		~SQLiteTable() = default;
+		~SqliteTable() = default;
 	};
 }

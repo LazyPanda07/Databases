@@ -1,25 +1,25 @@
-#include "Implementations/SQLiteTable.h"
+#include "Implementations/SqliteTable.h"
 
 #include <format>
 
 #include <sqlite3.h>
 
-#include "Implementations/SQLiteDatabase.h"
+#include "Implementations/SqliteDatabase.h"
 #include "Exceptions/DatabaseException.h"
 
 namespace database
 {
-	sqlite3* SQLiteTable::getConnection() const
+	sqlite3* SqliteTable::getConnection() const
 	{
-		return **static_cast<SQLiteDatabase*>(database);
+		return **static_cast<SqliteDatabase*>(database);
 	}
 
-	Table* SQLiteTable::createTable(std::string_view tableName, const CreateTableQuery& query, Database* database)
+	Table* SqliteTable::createTable(std::string_view tableName, const IQuery& query, Database* database)
 	{
-		return new SQLiteTable(tableName, query, database);
+		return new SqliteTable(tableName, query, database);
 	}
 
-	SQLiteTable::SQLiteTable(std::string_view tableName, const CreateTableQuery& query, Database* database) :
+	SqliteTable::SqliteTable(std::string_view tableName, const IQuery& query, Database* database) :
 		Table(tableName, database)
 	{
 		sqlite3* connection = this->getConnection();
@@ -35,7 +35,7 @@ namespace database
 		}
 	}
 
-	SQLResult SQLiteTable::execute(const IQuery& query, const std::vector<SQLValue>& values)
+	SqlResult SqliteTable::execute(const IQuery& query, const std::vector<SqlValue>& values)
 	{
 		sqlite3* connection = this->getConnection();
 		sqlite3_stmt* statement;
@@ -51,12 +51,12 @@ namespace database
 				sqlite3_finalize(ptr);
 			};
 		std::unique_ptr<sqlite3_stmt, decltype(deleter)> finalizer(statement, deleter);
-		SQLResult result;
+		SqlResult result;
 		int currentIndex = 1;
 
 		for (size_t i = 0; i < values.size(); i++, currentIndex++)
 		{
-			const SQLValue& value = values[i];
+			const SqlValue& value = values[i];
 
 			switch (value->index())
 			{
@@ -106,12 +106,12 @@ namespace database
 			case SQLITE_ROW:
 			{
 				int cols = sqlite3_column_count(statement);
-				std::unordered_map<std::string, SQLValue> column;
+				std::unordered_map<std::string, SqlValue> column;
 
 				for (int i = 0; i < cols; i++)
 				{
 					const char* columnName = sqlite3_column_name(statement, i);
-					SQLValue value;
+					SqlValue value;
 
 					switch (sqlite3_column_type(statement, i))
 					{

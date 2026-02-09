@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "SQLValue.h"
+#include "SqlValue.h"
 
 namespace database
 {

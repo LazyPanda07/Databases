@@ -2,26 +2,26 @@
 
 #include <unordered_map>
 
-#include "SQLValue.h"
+#include "SqlValue.h"
 
 namespace database
 {
-	class SQLResult
+	class SqlResult
 	{
 	public:
-		using ValueType = std::vector<std::unordered_map<std::string, SQLValue>>;
+		using ValueType = std::vector<std::unordered_map<std::string, SqlValue>>;
 
 	private:
 		ValueType rows;
 
 	public:
-		SQLResult() = default;
+		SqlResult() = default;
 
-		void addRow(std::unordered_map<std::string, SQLValue>&& row);
+		void addRow(std::unordered_map<std::string, SqlValue>&& row);
 
-		std::unordered_map<std::string, SQLValue>& at(size_t index);
+		std::unordered_map<std::string, SqlValue>& at(size_t index);
 
-		const std::unordered_map<std::string, SQLValue>& at(size_t index) const;
+		const std::unordered_map<std::string, SqlValue>& at(size_t index) const;
 
 		size_t size() const;
 
@@ -33,10 +33,10 @@ namespace database
 
 		operator const ValueType& () const;
 
-		std::unordered_map<std::string, SQLValue>& operator [](size_t index);
+		std::unordered_map<std::string, SqlValue>& operator [](size_t index);
 
-		const std::unordered_map<std::string, SQLValue>& operator [](size_t index) const;
+		const std::unordered_map<std::string, SqlValue>& operator [](size_t index) const;
 
-		~SQLResult() = default;
+		~SqlResult() = default;
 	};
 }

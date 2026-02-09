@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(GTEST_LIB_DIR ${CMAKE_SOURCE_DIR}/gtest/lib/)
 set(DATABASES_DIR ${CMAKE_SOURCE_DIR}/../Databases)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 set(GTEST_VERSION 1.17.0)
@@ -12,6 +11,7 @@ add_executable(
 	${PROJECT_NAME}
 	main.cpp
 	sqlite.cpp
+	redis.cpp
 )
 
 include(FetchContent)
@@ -42,6 +42,13 @@ target_link_libraries(
 	gtest
 	gtest_main
 )
+
+if (WIN32)
+	target_link_libraries(
+		${PROJECT_NAME} PRIVATE
+		ws2_32
+	)
+endif()
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
 

@@ -1,4 +1,4 @@
-#include "Implementations/SQLiteDatabase.h"
+#include "Implementations/SqliteDatabase.h"
 
 #include <format>
 
@@ -8,18 +8,18 @@
 
 namespace database
 {
-	Database* SQLiteDatabase::createDatabase(std::string_view databaseName)
+	Database* SqliteDatabase::createDatabase(std::string_view databaseName)
 	{
-		return new SQLiteDatabase(databaseName);
+		return new SqliteDatabase(databaseName);
 	}
 
-	SQLiteDatabase::SQLiteDatabase(std::string_view databaseName) :
+	SqliteDatabase::SqliteDatabase(std::string_view databaseName) :
 		Database(databaseName),
 		connection(nullptr)
 	{
 		if (databaseName.find(":memory:") == std::string_view::npos) // in memory
 		{
-			std::string fileName = std::format("{}.{}", this->getDatabaseName(), SQLiteDatabase::fileExtension);
+			std::string fileName = std::format("{}.{}", this->getDatabaseName(), SqliteDatabase::fileExtension);
 
 			if (sqlite3_open(fileName.data(), &connection) != SQLITE_OK)
 			{
@@ -35,12 +35,12 @@ namespace database
 		}
 	}
 
-	sqlite3* SQLiteDatabase::operator *() const
+	sqlite3* SqliteDatabase::operator *() const
 	{
 		return connection;
 	}
 
-	std::string_view SQLiteDatabase::getDatabaseFileName() const
+	std::string_view SqliteDatabase::getDatabaseFileName() const
 	{
 		sqlite3_filename result = sqlite3_db_filename(connection, this->getDatabaseName().data());
 
@@ -52,7 +52,7 @@ namespace database
 		return "";
 	}
 
-	SQLiteDatabase::~SQLiteDatabase()
+	SqliteDatabase::~SqliteDatabase()
 	{
 		if (connection)
 		{

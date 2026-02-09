@@ -2,6 +2,7 @@
 
 #include "Database.h"
 #include "Queries/CreateTableQuery.h"
+#include "Queries/RawQuery.h"
 
 namespace database
 {
@@ -16,7 +17,7 @@ namespace database
 	template<std::derived_from<Database> T>
 	std::shared_ptr<Database> createDatabase(std::string_view databaseName);
 
-	template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> Query, typename... Args>
+	template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> QueryT = CreateTableQuery, typename... Args>
 	const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database, Args&&... args);
 }
 
@@ -28,7 +29,7 @@ namespace database
 		return std::shared_ptr<Database>(T::createDatabase(databaseName));
 	}
 
-	template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> Query, typename... Args>
+	template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> QueryT, typename... Args>
 	const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database, Args&&... args)
 	{
 		if (database->contains(tableName))
@@ -36,8 +37,13 @@ namespace database
 			return database->get(tableName);
 		}
 
-		Query query(std::forward<Args>(args)...);
+		if constexpr (T::supportsTables)
+		{
+			QueryT query(std::forward<Args>(args)...);
 
-		return database->addTable(T::createTable(tableName, query, database.get()));
+			return database->addTable(T::createTable(tableName, query, database.get()));
+		}
+
+		return database->addTable(T::createTable(tableName, RawQuery(""), database.get()));
 	}
 }

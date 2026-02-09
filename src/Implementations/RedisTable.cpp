@@ -2,6 +2,8 @@
 
 #include <format>
 #include <algorithm>
+#include <charconv>
+#include <any>
 
 #include <hiredis/hiredis.h>
 
@@ -16,30 +18,31 @@ public:
 
 using ReplyPointer = std::unique_ptr<redisReply, RedisReplyDeleter>;
 
-static database::SQLValue::ValueType parseCommonValueType(const redisReply& reply);
+static database::SqlValue::ValueType parseCommonValueType(const redisReply& reply);
+
+template<typename T>
+static bool isType(std::string_view value, std::any& result) requires (std::integral<T> || std::floating_point<T>);
 
 namespace database
 {
-	Table* RedisTable::createTable(std::string_view tableName, const CreateTableQuery& query, Database* database)
+	Table* RedisTable::createTable(std::string_view tableName, const IQuery& query, Database* database)
 	{
-		static RedisTable instance("", query, database);
-
-		return &instance;
+		return new RedisTable("", query, database);
 	}
 
-	RedisTable::RedisTable(std::string_view tableName, const CreateTableQuery& query, Database* database) :
+	RedisTable::RedisTable(std::string_view tableName, const IQuery& query, Database* database) :
 		Table(tableName, database)
 	{
 
 	}
 
-	SQLResult RedisTable::execute(const IQuery& query, const std::vector<SQLValue>& values)
+	SqlResult RedisTable::execute(const IQuery& query, const std::vector<SqlValue>& values)
 	{
 		// TODO: multi threading
 
 		static std::vector<std::string> indices;
 
-		SQLResult result;
+		SqlResult result;
 		redisContext* context = **static_cast<RedisDatabase*>(database);
 		std::vector<const char*> argv;
 		std::vector<size_t> argvlen;
@@ -51,7 +54,7 @@ namespace database
 			argvlen.emplace_back(queryData.size());
 		}
 
-		for (const SQLValue& value : values)
+		for (const SqlValue& value : values)
 		{
 			std::string argument;
 
@@ -110,7 +113,7 @@ namespace database
 			throw exception::DatabaseException(std::format("Can't process command {}. Error message: {}", query.getQuery(), reply->str));
 		}
 
-		std::unordered_map<std::string, SQLValue> row;
+		std::unordered_map<std::string, SqlValue> row;
 
 		if (reply->type == REDIS_REPLY_ARRAY || reply->type == REDIS_REPLY_SET)
 		{
@@ -157,8 +160,10 @@ void RedisReplyDeleter::operator ()(redisReply* reply) const noexcept
 	}
 }
 
-database::SQLValue::ValueType parseCommonValueType(const redisReply& reply)
+database::SqlValue::ValueType parseCommonValueType(const redisReply& reply)
 {
+	std::any result;
+
 	switch (reply.type)
 	{
 	case REDIS_REPLY_STRING:
@@ -166,7 +171,16 @@ database::SQLValue::ValueType parseCommonValueType(const redisReply& reply)
 	case REDIS_REPLY_BIGNUM: // large number as string
 	case REDIS_REPLY_VERB:
 
-		return reply.str;
+		if (isType<int64_t>(reply.str, result))
+		{
+			return std::any_cast<int64_t>(result);
+		}
+		else if (isType<double>(reply.str, result))
+		{
+			return std::any_cast<double>(result);
+		}
+
+		return std::string(reply.str, reply.len);
 
 	case REDIS_REPLY_INTEGER:
 		return reply.integer;
@@ -187,4 +201,16 @@ database::SQLValue::ValueType parseCommonValueType(const redisReply& reply)
 	}
 
 	return nullptr;
+}
+
+template<typename T>
+bool isType(std::string_view value, std::any& result) requires (std::integral<T> || std::floating_point<T>)
+{
+	T temp{};
+
+	auto state = std::from_chars(value.data(), value.data() + value.size(), temp);
+
+	result = temp;
+
+	return state.ec == std::errc() && state.ptr == value.data() + value.size();
 }

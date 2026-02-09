@@ -2,6 +2,7 @@
 
 #include <format>
 #include <sstream>
+#include <optional>
 
 #include <hiredis/hiredis.h>
 
@@ -9,32 +10,70 @@
 
 namespace database
 {
-	Database* RedisDatabase::createDatabase(std::string_view ipAndPort)
+	Database* RedisDatabase::createDatabase(std::string_view connectString)
 	{
-		static RedisDatabase instance(ipAndPort);
-
-		return &instance;
+		return new RedisDatabase(connectString);
 	}
 
-	RedisDatabase::RedisDatabase(std::string_view ipAndPort) :
-		Database(ipAndPort),
+	RedisDatabase::RedisDatabase(std::string_view connectString) :
+		Database(connectString),
 		context(nullptr)
 	{
-		size_t splitIndex = ipAndPort.find(':');
+		std::string temp(connectString);
+		std::istringstream stream(temp);
+		std::vector<std::string> arguments;
 
-		if (splitIndex == std::string_view::npos)
+		while (std::getline(stream, temp, ':'))
 		{
-			throw exception::DatabaseException(std::format("Wrong format for ip and port: {}", ipAndPort));
+			arguments.emplace_back(temp);
 		}
 
-		std::string ip(ipAndPort.data(), ipAndPort.data() + splitIndex);
-		int port = std::stoi(std::string(ipAndPort.data() + splitIndex + 1));
+		if (arguments.size() == 1 || arguments.size() > 4)
+		{
+			throw exception::DatabaseException(std::format("Wrong format connect string: {}", connectString));
+		}
+
+		std::string_view ip(arguments[0]);
+		int port = std::stoi(arguments[1]);
 
 		context = redisConnect(ip.data(), port);
 
 		if (!context)
 		{
 			throw exception::DatabaseException(std::format("Can't connect to Redis server with {}:{}", ip, port));
+		}
+
+		if (arguments.size() > 2)
+		{
+			redisReply* reply = nullptr;
+			std::optional<std::string> errorMessage;
+
+			if (arguments.size() == 3)
+			{
+				reply = static_cast<redisReply*>(redisCommand(context, "AUTH %s", arguments[2].data()));
+			}
+			else
+			{
+				reply = static_cast<redisReply*>(redisCommand(context, "AUTH %s %s", arguments[2].data(), arguments[3].data()));
+			}
+
+			if (!reply)
+			{
+				errorMessage = context->errstr;
+			}
+			else if (reply->type == REDIS_REPLY_ERROR)
+			{
+				errorMessage = reply->str;
+
+				freeReplyObject(reply);
+			}
+
+			if (errorMessage)
+			{
+				redisFree(context);
+
+				throw exception::DatabaseException(*errorMessage);
+			}
 		}
 	}
 

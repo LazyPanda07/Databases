@@ -170,6 +170,11 @@ jobs:
     steps:
     - uses: actions/checkout@v6
 
+    - name: Install Redis
+      run: |
+        sudo apt update
+        sudo apt install -y redis-server
+
     - name: Download artifacts
       uses: actions/download-artifact@v6
       with:
@@ -186,9 +191,9 @@ jobs:
           cmake --install .
 
     - name: Tests
-      working-directory: Tests
+      working-directory: Tests/build/bin
       run: |
-          cd build/bin
+          redis-server --port 8080 --requirepass password & sleep 1
           LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd) ./Tests
 
 
@@ -203,6 +208,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
+
+    - name: Install Redis
+      run: |
+        sudo apt update
+        sudo apt install -y redis-server
 
     - name: Download artifacts
       uses: actions/download-artifact@v6
@@ -220,9 +230,9 @@ jobs:
           cmake --install .
 
     - name: Tests
-      working-directory: Tests
+      working-directory: Tests/build/bin
       run: |
-          cd build/bin
+          redis-server --port 8080 --requirepass password & sleep 1
           LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd) qemu-aarch64 ./Tests      
 
 

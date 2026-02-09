@@ -1,23 +1,23 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-#include "DatabaseFactory.h"
-#include "Implementations/SQLiteDatabase.h"
-#include "Implementations/SQLiteTable.h"
-#include "Queries/CreateTableQuery.h"
-#include "Exceptions/DatabaseException.h"
+#include <DatabaseFactory.h>
+#include <Implementations/SqliteDatabase.h>
+#include <Implementations/SqliteTable.h>
+#include <Queries/CreateTableQuery.h>
+#include <Exceptions/DatabaseException.h>
 
 static std::shared_ptr<database::Database> db;
 
 TEST(SQLite, CreateDatabase)
 {
-	ASSERT_NO_THROW(db = database::createDatabase<database::SQLiteDatabase>("test"));
+	ASSERT_NO_THROW(db = database::createDatabase<database::SqliteDatabase>("test"));
 }
 
 TEST(SQLite, CreateTable)
 {
 	ASSERT_NO_THROW
 	(
-		(database::createTable<database::SQLiteTable, database::CreateTableQuery>(
+		(database::createTable<database::SqliteTable>(
 			"test_table",
 			db,
 			"CREATE TABLE IF NOT EXISTS test_table (id INTEGER PRIMARY KEY AUTOINCREMENT, doubleValue DOUBLE NOT NULL, textValue TEXT NOT NULL UNIQUE, boolValue BOOLEAN NOT NULL, data BLOB)"
@@ -28,7 +28,7 @@ TEST(SQLite, CreateTable)
 TEST(SQLite, Insert)
 {
 	const std::unique_ptr<database::Table>& table = db->get("test_table");
-	std::vector<database::SQLValue> values;
+	std::vector<database::SqlValue> values;
 	std::vector<uint8_t> bytes;
 
 	values.emplace_back(1.1);
@@ -56,9 +56,9 @@ TEST(SQLite, Insert)
 TEST(SQLite, Select)
 {
 	const std::unique_ptr<database::Table>& table = db->get("test_table");
-	std::vector<database::SQLValue> values;
+	std::vector<database::SqlValue> values;
 
-	database::SQLResult result = table->execute({}, "SELECT * FROM test_table");
+	database::SqlResult result = table->execute({}, "SELECT * FROM test_table");
 
 	ASSERT_EQ(result.size(), 2);
 
@@ -80,7 +80,7 @@ TEST(SQLite, Select)
 TEST(SQLite, Update)
 {
 	const std::unique_ptr<database::Table>& table = db->get("test_table");
-	std::vector<database::SQLValue> values;
+	std::vector<database::SqlValue> values;
 
 	values.emplace_back(5.5);
 	values.emplace_back("modified");
@@ -88,7 +88,7 @@ TEST(SQLite, Update)
 
 	table->execute(values, "UPDATE test_table SET doubleValue = ?, textValue = ? WHERE id = ?");
 
-	database::SQLResult result = table->execute({ database::SQLValue(1) }, "SELECT doubleValue, textValue FROM test_table WHERE id = ?");
+	database::SqlResult result = table->execute({ database::SqlValue(1) }, "SELECT doubleValue, textValue FROM test_table WHERE id = ?");
 
 	ASSERT_EQ(result.size(), 1);
 
@@ -102,9 +102,9 @@ TEST(SQLite, Delete)
 {
 	const std::unique_ptr<database::Table>& table = db->get("test_table");
 
-	table->execute({ database::SQLValue(2.2) }, "DELETE FROM test_table WHERE doubleValue = ?");
+	table->execute({ database::SqlValue(2.2) }, "DELETE FROM test_table WHERE doubleValue = ?");
 
-	database::SQLResult result = table->execute({}, "SELECT * FROM test_table");
+	database::SqlResult result = table->execute({}, "SELECT * FROM test_table");
 
 	ASSERT_EQ(result.size(), 1);
 }
