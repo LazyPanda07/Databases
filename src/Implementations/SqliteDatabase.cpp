@@ -14,7 +14,7 @@ namespace database
 	}
 
 	SqliteDatabase::SqliteDatabase(std::string_view databaseName) :
-		Database(databaseName),
+		Database(databaseName, implementation::sqlite),
 		connection(nullptr)
 	{
 		if (databaseName.find(":memory:") == std::string_view::npos) // in memory

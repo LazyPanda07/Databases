@@ -50,8 +50,9 @@ namespace database
 		return it->second;
 	}
 
-	Database::Database(std::string_view databaseName) :
-		databaseName(databaseName)
+	Database::Database(std::string_view databaseName, std::string_view databaseImplementationName) :
+		databaseName(databaseName),
+		databaseImplementationName(databaseImplementationName)
 	{
 
 	}
@@ -59,5 +60,10 @@ namespace database
 	std::string_view Database::getDatabaseName() const
 	{
 		return databaseName;
+	}
+
+	std::string_view Database::getDatabaseImplementationName() const
+	{
+		return databaseImplementationName;
 	}
 }

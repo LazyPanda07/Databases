@@ -34,11 +34,12 @@ namespace database
 
 	protected:
 		std::string databaseName;
+		std::string_view databaseImplementationName;
 		std::unordered_map<std::string, std::unique_ptr<Table>, StringViewHash, StringViewEqual> tables;
 		mutable std::mutex tablesMutex;
 
 	public:
-		Database(std::string_view databaseName);
+		Database(std::string_view databaseName, std::string_view databaseImplementationName);
 
 		bool contains(std::string_view tableName, Table** outTable = nullptr) const;
 
@@ -46,12 +47,14 @@ namespace database
 
 		std::string_view getDatabaseName() const;
 
+		std::string_view getDatabaseImplementationName() const;
+
 		virtual std::string_view getDatabaseFileName() const = 0;
 
 		virtual ~Database() = default;
 
-		friend Table* createRawTable(std::string_view implementationName, std::string_view tableName, const CreateTableQuery& query, Database* database);
-		friend const std::unique_ptr<Table>& createTable(std::string_view implementationName, std::string_view tableName, const CreateTableQuery& query, std::shared_ptr<Database> database);
+		friend Table* createRawTable(std::string_view tableName, const CreateTableQuery& query, Database* database);
+		friend const std::unique_ptr<Table>& createTable(std::string_view tableName, const CreateTableQuery& query, std::shared_ptr<Database> database);
 
 		template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> QueryT, typename... Args>
 		friend const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database, Args&&... args);

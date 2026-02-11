@@ -10,9 +10,9 @@ namespace database
 
 	Database* createRawDatabase(std::string_view implementationName, std::string_view databaseName);
 
-	const std::unique_ptr<Table>& createTable(std::string_view implementationName, std::string_view tableName, const CreateTableQuery& query, std::shared_ptr<Database> database);
+	const std::unique_ptr<Table>& createTable(std::string_view tableName, const CreateTableQuery& query, std::shared_ptr<Database> database);
 
-	Table* createRawTable(std::string_view implementationName, std::string_view tableName, const CreateTableQuery& query, Database* database);
+	Table* createRawTable(std::string_view tableName, const CreateTableQuery& query, Database* database);
 
 	template<std::derived_from<Database> T>
 	std::shared_ptr<Database> createDatabase(std::string_view databaseName);

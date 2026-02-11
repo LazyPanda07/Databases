@@ -16,7 +16,7 @@ namespace database
 	}
 
 	RedisDatabase::RedisDatabase(std::string_view connectString) :
-		Database(connectString),
+		Database(connectString, implementation::redis),
 		context(nullptr)
 	{
 		std::string temp(connectString);
