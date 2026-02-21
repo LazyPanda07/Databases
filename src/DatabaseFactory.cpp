@@ -41,7 +41,7 @@ namespace database
 		return it->second(databaseName);
 	}
 
-	const std::unique_ptr<Table>& createTable(std::string_view tableName, const CreateTableQuery& query, std::shared_ptr<Database> database)
+	const std::unique_ptr<Table>& createTable(std::string_view tableName, const IQuery& query, std::shared_ptr<Database> database)
 	{
 		if (database->contains(tableName))
 		{
@@ -60,7 +60,7 @@ namespace database
 		return database->addTable(it->second(tableName, query, database.get()));
 	}
 
-	Table* createRawTable(std::string_view tableName, const CreateTableQuery& query, Database* database)
+	Table* createRawTable(std::string_view tableName, const IQuery& query, Database* database)
 	{
 		if (Table* temp = nullptr; database->contains(tableName, &temp))
 		{

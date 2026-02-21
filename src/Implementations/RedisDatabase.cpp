@@ -7,6 +7,7 @@
 #include <hiredis/hiredis.h>
 
 #include "Exceptions/DatabaseException.h"
+#include "Implementations/RedisTable.h"
 
 namespace database
 {
@@ -90,6 +91,11 @@ namespace database
 	std::string_view RedisDatabase::getDatabaseFileName() const
 	{
 		return "";
+	}
+
+	bool RedisDatabase::getSupportsTables() const
+	{
+		return RedisTable::supportsTables;
 	}
 
 	RedisDatabase::~RedisDatabase()

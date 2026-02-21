@@ -10,14 +10,14 @@ namespace database
 
 	Database* createRawDatabase(std::string_view implementationName, std::string_view databaseName);
 
-	const std::unique_ptr<Table>& createTable(std::string_view tableName, const CreateTableQuery& query, std::shared_ptr<Database> database);
+	const std::unique_ptr<Table>& createTable(std::string_view tableName, const IQuery& query, std::shared_ptr<Database> database);
 
-	Table* createRawTable(std::string_view tableName, const CreateTableQuery& query, Database* database);
+	Table* createRawTable(std::string_view tableName, const IQuery& query, Database* database);
 
 	template<std::derived_from<Database> T>
 	std::shared_ptr<Database> createDatabase(std::string_view databaseName);
 
-	template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> QueryT, typename... Args>
+	template<std::derived_from<Table> T, std::derived_from<IQuery> QueryT, typename... Args>
 	const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database, Args&&... args);
 }
 
@@ -29,7 +29,7 @@ namespace database
 		return std::shared_ptr<Database>(T::createDatabase(databaseName));
 	}
 
-	template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> QueryT, typename... Args>
+	template<std::derived_from<Table> T, std::derived_from<IQuery> QueryT, typename... Args>
 	const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database, Args&&... args)
 	{
 		if (database->contains(tableName))

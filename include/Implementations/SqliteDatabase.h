@@ -27,6 +27,8 @@ namespace database
 
 		std::string_view getDatabaseFileName() const override;
 
+		bool getSupportsTables() const override;
+
 		~SqliteDatabase();
 	};
 }

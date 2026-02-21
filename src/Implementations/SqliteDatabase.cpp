@@ -5,6 +5,7 @@
 #include <sqlite3.h>
 
 #include "Exceptions/DatabaseException.h"
+#include "Implementations/SqliteTable.h"
 
 namespace database
 {
@@ -50,6 +51,11 @@ namespace database
 		}
 
 		return "";
+	}
+
+	bool SqliteDatabase::getSupportsTables() const
+	{
+		return SqliteTable::supportsTables;
 	}
 
 	SqliteDatabase::~SqliteDatabase()

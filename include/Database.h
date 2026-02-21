@@ -51,12 +51,14 @@ namespace database
 
 		virtual std::string_view getDatabaseFileName() const = 0;
 
+		virtual bool getSupportsTables() const = 0;
+
 		virtual ~Database() = default;
 
-		friend Table* createRawTable(std::string_view tableName, const CreateTableQuery& query, Database* database);
-		friend const std::unique_ptr<Table>& createTable(std::string_view tableName, const CreateTableQuery& query, std::shared_ptr<Database> database);
+		friend Table* createRawTable(std::string_view tableName, const IQuery& query, Database* database);
+		friend const std::unique_ptr<Table>& createTable(std::string_view tableName, const IQuery& query, std::shared_ptr<Database> database);
 
-		template<std::derived_from<Table> T, std::derived_from<CreateTableQuery> QueryT, typename... Args>
+		template<std::derived_from<Table> T, std::derived_from<IQuery> QueryT, typename... Args>
 		friend const std::unique_ptr<Table>& createTable(std::string_view tableName, std::shared_ptr<Database> database, Args&&... args);
 	};
 }
