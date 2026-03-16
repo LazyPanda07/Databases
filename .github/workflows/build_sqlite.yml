@@ -5,8 +5,7 @@ on: workflow_dispatch
 
   
 env:
-  SQLITE_TAG: version-3.51.2
-  TCL_VERSION: 9.0.1
+  SQLITE_TAG: version-3.52.0
 
 
 jobs:
@@ -15,7 +14,7 @@ jobs:
 
     steps:
     - name: Get SQLite
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: sqlite/sqlite
         ref: ${{ env.SQLITE_TAG }}
@@ -39,7 +38,7 @@ jobs:
           mv sqlite3.h sqlite_windows/include
 
     - name: Upload SQLite
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: sqlite_windows
         path: sqlite_windows
@@ -52,7 +51,7 @@ jobs:
 
     steps:
     - name: Get SQLite
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: sqlite/sqlite
         ref: ${{ env.SQLITE_TAG }}
@@ -74,7 +73,7 @@ jobs:
           mv build/sqlite3.h sqlite_linux/include
 
     - name: Upload SQLite
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: sqlite_linux
         path: sqlite_linux
@@ -85,7 +84,7 @@ jobs:
           mv sqlite_linux/include/sqlite3.h .
 
     - name: Upload SQLite sources
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: sqlite3_sources
         path: |
@@ -119,7 +118,7 @@ jobs:
           mv sqlite3.h sqlite_linux_aarch64/include
 
     - name: Upload SQLite
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: sqlite_linux_aarch64
         path: sqlite_linux_aarch64
@@ -131,18 +130,18 @@ jobs:
       android-version: android-35
       android-api-version: android-35
       sdk-install-name: platforms;android-35
-      ndk-version: 28.0.12433566
-      ndk-install-name: ndk;28.0.12433566
+      ndk-version: 29.0.14206865
+      ndk-install-name: ndk;29.0.14206865
 
     steps:
-    - name: Setup JDK 17
-      uses: actions/setup-java@v4
+    - name: Setup JDK 21
+      uses: actions/setup-java@v5
       with:
-        java-version: 17
+        java-version: 21
         distribution: adopt
 
     - name: Get SQLite
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: sqlite/sqlite
         ref: ${{ env.SQLITE_TAG }}
@@ -182,7 +181,7 @@ jobs:
         make install -j $(nproc)
 
     - name: Upload SQLite
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: sqlite_android
         path: sqlite_android
