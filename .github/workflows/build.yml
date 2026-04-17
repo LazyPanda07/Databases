@@ -64,8 +64,7 @@ jobs:
 
 
   linux-aarch64-build:
-    runs-on: ubuntu-latest
-    container: lazypanda07/ubuntu_cxx20:aarch64
+    runs-on: ubuntu-24.04-arm
     strategy:
       matrix:
         configuration: [Debug, Release]
@@ -77,7 +76,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DCMAKE_INSTALL_PREFIX=Databases -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=Databases -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
@@ -210,10 +209,8 @@ jobs:
 
 
   linux-aarch64-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: linux-aarch64-build
-    container:
-      image: lazypanda07/ubuntu_cxx20:aarch64
     strategy:
       matrix:
         configuration: [Debug, Release]
@@ -245,7 +242,7 @@ jobs:
       working-directory: Tests/build/bin
       run: |
           redis-server --port 8080 --requirepass password & sleep 1
-          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd) qemu-aarch64 ./Tests      
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd) ./Tests      
 
 
   publish:

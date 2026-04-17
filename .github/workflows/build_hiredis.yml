@@ -15,7 +15,7 @@ jobs:
         config:
           - { os: windows-latest, artifact-name: hiredis-windows, image: "" }
           - { os: ubuntu-latest, artifact-name: hiredis-linux, image: lazypanda07/ubuntu_cxx20:24.04 }
-          - { os: ubuntu-latest, artifact-name: hiredis-aarch64-linux, image: lazypanda07/ubuntu_cxx20:aarch64 }
+          - { os: ubuntu-24.04-arm, artifact-name: hiredis-aarch64-linux, image: "" }
           - { os: ubuntu-latest, artifact-name: hiredis-android, image: lazypanda07/ubuntu_cxx20:android }
     runs-on: ${{ matrix.config.os }}
     container:
@@ -34,12 +34,12 @@ jobs:
       if: ${{ matrix.config.os == 'windows-latest' }}
       uses: ilammy/msvc-dev-cmd@v1.13.0
     
-    - name: Create AArch64 toolchain
-      if: ${{ contains(matrix.config.artifact-name, 'aarch64-linux') }}
-      shell: bash
-      run: |
-        echo "ADDITIONAL_CMAKE_PARAMETERS=-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake" >> ${GITHUB_ENV}
-        echo -e "set(CMAKE_SYSTEM_NAME Linux)\nset(CMAKE_SYSTEM_PROCESSOR aarch64)\nset(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)\nset(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)\n" > toolchain-aarch64.cmake
+    # - name: Create AArch64 toolchain
+    #   if: ${{ contains(matrix.config.artifact-name, 'aarch64-linux') }}
+    #   shell: bash
+    #   run: |
+    #     echo "ADDITIONAL_CMAKE_PARAMETERS=-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake" >> ${GITHUB_ENV}
+    #     echo -e "set(CMAKE_SYSTEM_NAME Linux)\nset(CMAKE_SYSTEM_PROCESSOR aarch64)\nset(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)\nset(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)\n" > toolchain-aarch64.cmake
 
     - name: Export Android build parameters
       if: ${{ contains(matrix.config.artifact-name, 'android') }}
