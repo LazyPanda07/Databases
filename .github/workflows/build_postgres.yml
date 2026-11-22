@@ -29,9 +29,9 @@ jobs:
       shell: bash
       run: |
           ./configure --prefix=$(pwd)/build --without-readline
-          make -j $(nproc)
-          make install
-          ls build
+          make -j $(nproc) -C src/interfaces/libpq
+          make install -C src/interfaces/libpq
+          ls build/lib
 
     # - name: Prepare
     #   shell: bash
@@ -65,9 +65,9 @@ jobs:
     - name: Build
       run: |
           ./configure --prefix=$(pwd)/build --without-readline
-          make -j $(nproc)
-          make install
-          ls build
+          make -j $(nproc) -C src/interfaces/libpq
+          make install -C src/interfaces/libpq
+          ls build/lib
       
     # - name: Prepare
     #   run: |
@@ -96,9 +96,9 @@ jobs:
     - name: Build
       run: |
           ./configure --prefix=$(pwd)/build --without-readline
-          make -j $(nproc)
-          make install
-          ls build
+          make -j $(nproc) -C src/interfaces/libpq
+          make install -C src/interfaces/libpq
+          ls build/lib
       
     # - name: Prepare
     #   run: |
@@ -129,9 +129,9 @@ jobs:
     - name: Build
       run: |
           ./configure --host=aarch64-linux-android --prefix=$(pwd)/build --without-readline
-          make -j $(nproc)
-          make install
-          ls build
+          make -j $(nproc) -C src/interfaces/libpq
+          make install -C src/interfaces/libpq
+          ls build/lib
       
     # - name: Prepare
     #   run: |
