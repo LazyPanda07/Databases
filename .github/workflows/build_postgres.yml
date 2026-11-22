@@ -28,7 +28,7 @@ jobs:
     - name: Build
       shell: bash
       run: |
-          ./configure --prefix=build --without-readline
+          ./configure --prefix=$(pwd)/build --without-readline
           make -j $(nproc)
           make install
           ls build
@@ -64,7 +64,7 @@ jobs:
         
     - name: Build
       run: |
-          ./configure --prefix=build --without-readline
+          ./configure --prefix=$(pwd)/build --without-readline
           make -j $(nproc)
           make install
           ls build
@@ -95,7 +95,7 @@ jobs:
         
     - name: Build
       run: |
-          ./configure --prefix=build --without-readline
+          ./configure --prefix=$(pwd)/build --without-readline
           make -j $(nproc)
           make install
           ls build
@@ -128,7 +128,7 @@ jobs:
         
     - name: Build
       run: |
-          ./configure --host=aarch64-linux-android --prefix=build --without-readline
+          ./configure --host=aarch64-linux-android --prefix=$(pwd)/build --without-readline
           make -j $(nproc)
           make install
           ls build
