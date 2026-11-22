@@ -5,20 +5,24 @@
 #include <array>
 
 #include "Implementations/SqliteDatabase.h"
+#include "Implementations/PostgresDatabase.h"
 #include "Implementations/RedisDatabase.h"
 
 #include "Implementations/SqliteTable.h"
+#include "Implementations/PostgresTable.h"
 #include "Implementations/RedisTable.h"
 
-static constexpr std::array<std::pair<std::string_view, database::Database* (*)(std::string_view)>, 2> createDatabaseFunctions =
+static constexpr std::array<std::pair<std::string_view, database::Database* (*)(std::string_view)>, 3> createDatabaseFunctions =
 {
 	std::make_pair(database::SqliteDatabase::implementationName, &database::SqliteDatabase::createDatabase),
+	std::make_pair(database::PostgresDatabase::implementationName, &database::PostgresDatabase::createDatabase),
 	std::make_pair(database::RedisDatabase::implementationName, &database::RedisDatabase::createDatabase)
 };
 
-static constexpr std::array<std::pair<std::string_view, database::Table* (*)(std::string_view, const database::IQuery&, database::Database* database)>, 2> createTableFunctions =
+static constexpr std::array<std::pair<std::string_view, database::Table* (*)(std::string_view, const database::IQuery&, database::Database* database)>, 3> createTableFunctions =
 {
 	std::make_pair(database::SqliteTable::implementationName, &database::SqliteTable::createTable),
+	std::make_pair(database::PostgresTable::implementationName, &database::PostgresTable::createTable),
 	std::make_pair(database::RedisTable::implementationName, &database::RedisTable::createTable)
 };
 
