@@ -40,7 +40,7 @@ target_link_libraries(
 	Databases
 	sqlite3
 	hiredis
-	libpq
+	pq
 	gtest
 	gtest_main
 )

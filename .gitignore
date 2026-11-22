@@ -52,4 +52,5 @@ Databases/
 
 # Postgres
 !libpq.a
-!libpq.lib
+!pq.lib
+!pq.dll

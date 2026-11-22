@@ -40,9 +40,9 @@ if(UNIX)
 		set(HIREDIS_LIBRARY_PATH ${HIREDIS_LIBRARY_PATH}/Android PARENT_SCOPE)
 		set(POSTGRES_LIBRARY_PATH ${POSTGRES_LIBRARY_PATH}/Android PARENT_SCOPE)
 		
-		install(DIRECTORY vendor/sqlite3/lib/Android/ DESTINATION lib)	
-		install(DIRECTORY vendor/hiredis/lib/Android/ DESTINATION lib)	
-		install(DIRECTORY vendor/postgres/lib/Android/ DESTINATION lib)	
+		install(DIRECTORY vendor/sqlite3/lib/Android/ DESTINATION lib)
+		install(DIRECTORY vendor/hiredis/lib/Android/ DESTINATION lib)
+		install(DIRECTORY vendor/postgres/lib/Android/ DESTINATION lib)
 	else()
 		if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
 			set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/LinuxARM PARENT_SCOPE)
@@ -51,7 +51,7 @@ if(UNIX)
 
 			install(DIRECTORY vendor/sqlite3/lib/LinuxARM/ DESTINATION lib)
 			install(DIRECTORY vendor/hiredis/lib/LinuxARM/ DESTINATION lib)
-			install(DIRECTORY vendor/postgres/lib/LinuxARM/ DESTINATION lib)	
+			install(DIRECTORY vendor/postgres/lib/LinuxARM/ DESTINATION lib)
 		else()
 			set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux PARENT_SCOPE)
 			set(HIREDIS_LIBRARY_PATH ${HIREDIS_LIBRARY_PATH}/Linux PARENT_SCOPE)
@@ -59,7 +59,7 @@ if(UNIX)
 
 			install(DIRECTORY vendor/sqlite3/lib/Linux/ DESTINATION lib)
 			install(DIRECTORY vendor/hiredis/lib/Linux/ DESTINATION lib)
-			install(DIRECTORY vendor/postgres/lib/Linux/ DESTINATION lib)	
+			install(DIRECTORY vendor/postgres/lib/Linux/ DESTINATION lib)
 		endif()
 		
 		add_compile_options(-rdynamic)
@@ -74,7 +74,7 @@ else()
 	install(DIRECTORY vendor/hiredis/lib/Windows/ DESTINATION lib)
 	install(DIRECTORY vendor/postgres/lib/Windows/ DESTINATION lib)
 	install(FILES ${PROJECT_SOURCE_DIR}/vendor/sqlite3/dll/sqlite3.dll DESTINATION dll)
-	install(FILES ${PROJECT_SOURCE_DIR}/vendor/postgres/dll/libpq.dll DESTINATION dll)
+	install(FILES ${PROJECT_SOURCE_DIR}/vendor/postgres/dll/pq.dll DESTINATION dll)
 endif()
 
 target_include_directories(
@@ -96,7 +96,7 @@ target_link_libraries(
 	${PROJECT_NAME} PUBLIC
 	sqlite3
 	hiredis
-	libpq
+	pq
 )
 
 install(
