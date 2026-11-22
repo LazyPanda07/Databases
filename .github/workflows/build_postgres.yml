@@ -65,6 +65,8 @@ jobs:
           make -j $(nproc) -C src/port
           make -j $(nproc) -C src/common
           make -j $(nproc) -C src/interfaces/libpq
+          make install -C src/port
+          make install -C src/common
           make install -C src/interfaces/libpq
           ls build/lib
       
@@ -91,6 +93,8 @@ jobs:
           make -j $(nproc) -C src/port
           make -j $(nproc) -C src/common
           make -j $(nproc) -C src/interfaces/libpq
+          make install -C src/port
+          make install -C src/common
           make install -C src/interfaces/libpq
       
     - name: Upload Postgres
@@ -123,6 +127,8 @@ jobs:
           make -j $(nproc) -C src/port
           make -j $(nproc) -C src/common
           make -j $(nproc) -C src/interfaces/libpq
+          make install -C src/port
+          make install -C src/common
           make install -C src/interfaces/libpq
       
     - name: Upload Postgres
