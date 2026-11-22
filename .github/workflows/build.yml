@@ -146,7 +146,7 @@ jobs:
         fileName: Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2.zip
         
     - name: Download artifacts
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.configuration }}_Windows
         path: Databases
@@ -231,7 +231,7 @@ jobs:
         sudo apt install -y redis-server
 
     - name: Download artifacts
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.configuration }}_Linux
         path: Databases
@@ -287,7 +287,7 @@ jobs:
         sudo apt install -y redis-server
 
     - name: Download artifacts
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.configuration }}_LinuxARM
         path: Databases
@@ -333,7 +333,7 @@ jobs:
 
     - name: Download artifacts
       if: ${{ env.CURRENT_BRANCH == 'main' }}
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       
     - name: Setup Windows build list
       run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
