@@ -29,9 +29,8 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
         
     - name: Build
-      shell: bash
       run: |
-        meson setup build --prefix=$(pwd)/build --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled
+        meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled
         ninja -C build libpq
         ninja -C build install
         ls build/lib
@@ -62,7 +61,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y pkg-config libicu-dev bison flex
+        sudo apt install -y pkg-config libicu-dev bison flex zlib1g-dev
 
     - name: Get Postgres
       uses: actions/checkout@v7
@@ -106,20 +105,12 @@ jobs:
           ./configure --prefix=$(pwd)/build --without-readline
           make -j $(nproc) -C src/interfaces/libpq
           make install -C src/interfaces/libpq
-          ls build/lib
       
-    # - name: Prepare
-    #   run: |
-    #       mkdir -p sqlite_linux_aarch64/lib
-    #       mkdir sqlite_linux_aarch64/include
-    #       mv build/libsqlite3.so sqlite_linux_aarch64/lib
-    #       mv build/sqlite3.h sqlite_linux_aarch64/include
-
-    # - name: Upload SQLite
-    #   uses: actions/upload-artifact@v6
-    #   with:
-    #     name: sqlite_linux_aarch64
-    #     path: sqlite_linux_aarch64
+    - name: Upload Postgres
+      uses: actions/upload-artifact@v6
+      with:
+        name: postgres_linux_aarch64
+        path: build
         
 
   android-build:
@@ -144,17 +135,9 @@ jobs:
           ./configure --host=aarch64-linux-android --prefix=$(pwd)/build --without-readline
           make -j $(nproc) -C src/interfaces/libpq
           make install -C src/interfaces/libpq
-          ls build/lib
       
-    # - name: Prepare
-    #   run: |
-    #       mkdir -p sqlite_linux_aarch64/lib
-    #       mkdir sqlite_linux_aarch64/include
-    #       mv build/libsqlite3.so sqlite_linux_aarch64/lib
-    #       mv build/sqlite3.h sqlite_linux_aarch64/include
-
-    # - name: Upload SQLite
-    #   uses: actions/upload-artifact@v6
-    #   with:
-    #     name: sqlite_linux_aarch64
-    #     path: sqlite_linux_aarch64
+    - name: Upload Postgres
+      uses: actions/upload-artifact@v6
+      with:
+        name: postgres_android
+        path: build
