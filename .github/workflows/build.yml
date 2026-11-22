@@ -132,6 +132,7 @@ jobs:
 
     env:
       REDIS_VERSION: 8.0.5
+      POSTGRES_PASSWORD: root
 
     steps:
     - uses: actions/checkout@v7
@@ -172,7 +173,7 @@ jobs:
     - name: Initialize database
       shell: bash
       run: |
-          export PGPASSWORD="secret"
+          export PGPASSWORD="${{ env.POSTGRES_PASSWORD }}"
 
           "$PGBIN/createdb" -h localhost -U postgres test
           

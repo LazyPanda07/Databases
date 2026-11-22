@@ -11,13 +11,19 @@ static std::shared_ptr<database::Database> db;
 TEST(Postgres, CreateDatabase)
 {
 	std::string host = "127.0.0.1";
+	std::string password = "secret";
 
 	if (char* overrideHost = std::getenv("POSTGRES_HOST"))
 	{
 		host = overrideHost;
 	}
 
-	ASSERT_NO_THROW(db = database::createDatabase<database::PostgresDatabase>(std::format("host={} port=5432 dbname=test user=postgres password=secret", host)));
+	if (char* overridePassword = std::getenv("POSTGRES_PASSWORD"))
+	{
+		password = overridePassword;
+	}
+
+	ASSERT_NO_THROW(db = database::createDatabase<database::PostgresDatabase>(std::format("host={} port=5432 dbname=test user=postgres password={}", host, password)));
 }
 
 TEST(Postgres, CreateTable)
