@@ -132,6 +132,7 @@ jobs:
 
     env:
       REDIS_VERSION: 8.0.5
+      PGPASSWORD: secret
 
     steps:
     - uses: actions/checkout@v7
@@ -171,9 +172,8 @@ jobs:
 
     - name: Initialize database
       run: |
-          & $env:PGPASSWORD = "secret"
-          "$env:PGBIN\createdb.exe" -h localhost -U postgres test
-
+          & "$env:PGBIN\createdb.exe" -h localhost -U postgres test
+          
     - name: Build tests
       working-directory: Tests
       run: |
