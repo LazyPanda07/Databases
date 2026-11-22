@@ -45,6 +45,14 @@ target_link_libraries(
 	gtest_main
 )
 
+if (UNIX)
+	target_link_libraries(
+		${PROJECT_NAME} PRIVATE
+		pgcommon_shlib
+		pgport_shlib
+	)
+endif()
+
 if (WIN32)
 	target_link_libraries(
 		${PROJECT_NAME} PRIVATE

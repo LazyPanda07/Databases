@@ -99,6 +99,14 @@ target_link_libraries(
 	pq
 )
 
+if (UNIX)
+	target_link_libraries(
+		${PROJECT_NAME} PUBLIC
+		pgcommon_shlib
+		pgport_shlib
+	)
+endif()
+
 install(
 	TARGETS ${PROJECT_NAME} 
 	ARCHIVE DESTINATION lib
