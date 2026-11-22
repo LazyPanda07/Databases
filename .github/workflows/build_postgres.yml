@@ -21,13 +21,10 @@ jobs:
       with:
         repository: postgres/postgres
         ref: ${{ env.POSTGRES_TAG }}
-
-    - name: Enable Ninja
-      uses: ilammy/msvc-dev-cmd@v1.13.0
         
     - name: Build
       run: |
-        python -m pip install meson
+        python -m pip install meson ninja
         meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled
         ninja -C build libpq
         ninja -C build install
