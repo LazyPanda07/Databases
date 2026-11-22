@@ -33,7 +33,7 @@ jobs:
         ls build/lib
 
     - name: Upload Postgres
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: postgres_windows
         path: build
@@ -68,7 +68,7 @@ jobs:
           ls build/lib
       
     - name: Upload Postgres
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: postgres_linux
         path: build
@@ -95,7 +95,7 @@ jobs:
           make install -C src/interfaces/libpq
       
     - name: Upload Postgres
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: postgres_linux_aarch64
         path: build
@@ -120,7 +120,7 @@ jobs:
         
     - name: Build
       run: |
-          ./configure --host=aarch64-linux-android --prefix=$(pwd)/build --without-readline
+          ./configure CC=${ANDROID_CROSS_COMPILER_CC} CXX=${ANDROID_CROSS_COMPILER_CXX} --host=aarch64-linux-android --prefix=$(pwd)/build --without-readline
           make -j $(nproc) -C src/port
           make -j $(nproc) -C src/common
           make -j $(nproc) -C src/interfaces/libpq
@@ -129,7 +129,7 @@ jobs:
           make install -C src/interfaces/libpq
       
     - name: Upload Postgres
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: postgres_android
         path: build
