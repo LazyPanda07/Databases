@@ -161,7 +161,7 @@ jobs:
           Set-Service postgresql-x64-17 -StartupType Manual
           Start-Service postgresql-x64-17
 
-    - name: Check PostgreSQL
+    - name: Check Postgres
       run: |
         & "$env:PGBIN\pg_isready.exe" -h localhost -p 5432
 
@@ -172,7 +172,7 @@ jobs:
     - name: Initialize database
       run: |
           $env:PGPASSWORD = "secret"
-          createdb -h localhost -U postgres test
+          "$env:PGBIN\createdb.exe" -h localhost -U postgres test
 
     - name: Build tests
       working-directory: Tests
