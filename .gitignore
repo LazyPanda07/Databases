@@ -39,7 +39,7 @@
 bin/
 build/
 out/
-Databases
+Databases/
 
 # SQLite
 !libsqlite3.so
@@ -49,3 +49,6 @@ Databases
 # Hiredis
 !libhiredis.a
 !hiredis.lib
+
+# Postgres
+!libpq.a

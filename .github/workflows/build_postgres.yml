@@ -30,26 +30,17 @@ jobs:
         
     - name: Build
       run: |
+        refreshenv
         meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled
         ninja -C build libpq
         ninja -C build install
         ls build/lib
 
-    # - name: Prepare
-    #   shell: bash
-    #   run: |
-    #       mkdir -p sqlite_windows/dll
-    #       mkdir sqlite_windows/lib
-    #       mkdir sqlite_windows/include
-    #       mv sqlite3.dll sqlite_windows/dll
-    #       mv sqlite3.lib sqlite_windows/lib
-    #       mv sqlite3.h sqlite_windows/include
-
-    # - name: Upload SQLite
-    #   uses: actions/upload-artifact@v6
-    #   with:
-    #     name: sqlite_windows
-    #     path: sqlite_windows
+    - name: Upload Postgres
+      uses: actions/upload-artifact@v6
+      with:
+        name: postgres_windows
+        path: build
 
     
   linux-build:
@@ -76,18 +67,11 @@ jobs:
           make install -C src/interfaces/libpq
           ls build/lib
       
-    # - name: Prepare
-    #   run: |
-    #       mkdir -p sqlite_linux/lib
-    #       mkdir sqlite_linux/include
-    #       mv build/libsqlite3.so sqlite_linux/lib
-    #       mv build/sqlite3.h sqlite_linux/include
-
-    # - name: Upload SQLite
-    #   uses: actions/upload-artifact@v6
-    #   with:
-    #     name: sqlite_linux
-    #     path: sqlite_linux
+    - name: Upload Postgres
+      uses: actions/upload-artifact@v6
+      with:
+        name: postgres_linux
+        path: build
         
 
   linux-aarch64-build:
