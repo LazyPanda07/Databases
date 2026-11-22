@@ -171,7 +171,7 @@ jobs:
 
     - name: Initialize database
       run: |
-          $env:PGPASSWORD = secret
+          $env:PGPASSWORD=secret
 
           & "$env:PGBIN\createdb.exe" -h localhost -U postgres test
           
