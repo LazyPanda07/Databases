@@ -30,14 +30,18 @@ jobs:
         python -m pip install meson ninja
         choco install winflexbison
 
+        $CURRENT_DIRECTORY="$(pwd)"
+        $OPENSSL_INSTALL_PATH="$CURRENT_DIRECTORY/../openssl-install"
+
+        cd ..
         git clone https://github.com/openssl/openssl.git
         cd openssl
-        perl Configure VC-WIN64A no-shared no-tests --prefix="$(pwd)/../openssl-install"
+        perl Configure VC-WIN64A no-shared no-tests --prefix="$OPENSSL_INSTALL_PATH"
         nmake
         nmake install_sw
-        cd ..
+        cd $CURRENT_DIRECTORY
 
-        meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled -Dextra_include_dirs=openssl-install/include -Dextra_lib_dirs=openssl-install/lib
+        meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled -Dextra_include_dirs="$OPENSSL_INSTALL_PATH/include" -Dextra_lib_dirs="$OPENSSL_INSTALL_PATH/lib"
         ninja -C build libpq
         ninja -C build install
         ls build/lib
