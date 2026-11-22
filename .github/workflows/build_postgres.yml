@@ -1,0 +1,147 @@
+name: Build Postgres
+
+
+# on: workflow_dispatch
+on:
+  push:
+    branches: [dev]
+
+  
+env:
+  POSTGRES_TAG: REL_19_0
+
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Get Postgres
+      uses: actions/checkout@v7
+      with:
+        repository: postgres/postgres
+        ref: ${{ env.POSTGRES_TAG }}
+
+    - name: Enable Ninja
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+        
+    - name: Build
+      shell: bash
+      run: |
+          ./configure --prefix=build --without-readline
+          make -j $(nproc)
+          make install
+          ls build
+
+    # - name: Prepare
+    #   shell: bash
+    #   run: |
+    #       mkdir -p sqlite_windows/dll
+    #       mkdir sqlite_windows/lib
+    #       mkdir sqlite_windows/include
+    #       mv sqlite3.dll sqlite_windows/dll
+    #       mv sqlite3.lib sqlite_windows/lib
+    #       mv sqlite3.h sqlite_windows/include
+
+    # - name: Upload SQLite
+    #   uses: actions/upload-artifact@v6
+    #   with:
+    #     name: sqlite_windows
+    #     path: sqlite_windows
+
+    
+  linux-build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
+
+    steps:
+    - name: Get Postgres
+      uses: actions/checkout@v7
+      with:
+        repository: postgres/postgres
+        ref: ${{ env.POSTGRES_TAG }}
+        
+    - name: Build
+      run: |
+          ./configure --prefix=build --without-readline
+          make -j $(nproc)
+          make install
+          ls build
+      
+    # - name: Prepare
+    #   run: |
+    #       mkdir -p sqlite_linux/lib
+    #       mkdir sqlite_linux/include
+    #       mv build/libsqlite3.so sqlite_linux/lib
+    #       mv build/sqlite3.h sqlite_linux/include
+
+    # - name: Upload SQLite
+    #   uses: actions/upload-artifact@v6
+    #   with:
+    #     name: sqlite_linux
+    #     path: sqlite_linux
+        
+
+  linux-aarch64-build:
+    runs-on: ubuntu-26.04-arm
+
+    steps:
+    - name: Get Postgres
+      uses: actions/checkout@v7
+      with:
+        repository: postgres/postgres
+        ref: ${{ env.POSTGRES_TAG }}
+        
+    - name: Build
+      run: |
+          ./configure --prefix=build --without-readline
+          make -j $(nproc)
+          make install
+          ls build
+      
+    # - name: Prepare
+    #   run: |
+    #       mkdir -p sqlite_linux_aarch64/lib
+    #       mkdir sqlite_linux_aarch64/include
+    #       mv build/libsqlite3.so sqlite_linux_aarch64/lib
+    #       mv build/sqlite3.h sqlite_linux_aarch64/include
+
+    # - name: Upload SQLite
+    #   uses: actions/upload-artifact@v6
+    #   with:
+    #     name: sqlite_linux_aarch64
+    #     path: sqlite_linux_aarch64
+        
+
+  android-build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:android
+
+    steps:
+    - name: Get Postgres
+      uses: actions/checkout@v7
+      with:
+        repository: postgres/postgres
+        ref: ${{ env.POSTGRES_TAG }}
+        
+    - name: Build
+      run: |
+          ./configure --host=aarch64-linux-android --prefix=build --without-readline
+          make -j $(nproc)
+          make install
+          ls build
+      
+    # - name: Prepare
+    #   run: |
+    #       mkdir -p sqlite_linux_aarch64/lib
+    #       mkdir sqlite_linux_aarch64/include
+    #       mv build/libsqlite3.so sqlite_linux_aarch64/lib
+    #       mv build/sqlite3.h sqlite_linux_aarch64/include
+
+    # - name: Upload SQLite
+    #   uses: actions/upload-artifact@v6
+    #   with:
+    #     name: sqlite_linux_aarch64
+    #     path: sqlite_linux_aarch64

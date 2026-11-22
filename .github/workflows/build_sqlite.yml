@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Get SQLite
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: sqlite/sqlite
         ref: ${{ env.SQLITE_TAG }}
@@ -51,7 +51,7 @@ jobs:
 
     steps:
     - name: Get SQLite
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: sqlite/sqlite
         ref: ${{ env.SQLITE_TAG }}
@@ -84,7 +84,7 @@ jobs:
 
     steps:
     - name: Get SQLite
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: sqlite/sqlite
         ref: ${{ env.SQLITE_TAG }}
@@ -129,7 +129,7 @@ jobs:
         distribution: adopt
 
     - name: Get SQLite
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: sqlite/sqlite
         ref: ${{ env.SQLITE_TAG }}
