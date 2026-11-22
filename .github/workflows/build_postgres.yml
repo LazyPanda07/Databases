@@ -37,7 +37,7 @@ jobs:
         nmake install_sw
         cd ..
 
-        meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled -Dextra_include_dirs="$(pwd)/openssl-install/include" -Dextra_lib_dirs="$(pwd)/openssl-install/lib"
+        meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled -Dextra_include_dirs=openssl-install/include -Dextra_lib_dirs=openssl-install/lib
         ninja -C build libpq
         ninja -C build install
         ls build/lib
