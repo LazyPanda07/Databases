@@ -25,6 +25,7 @@ jobs:
     - name: Build
       run: |
         python -m pip install meson ninja
+        choco install winflexbison
         meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled
         ninja -C build libpq
         ninja -C build install
