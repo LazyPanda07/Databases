@@ -183,14 +183,6 @@
 
 #define HAVE_SOCKLEN_T 1
 
-#define HAVE_SSL_CTX_SET_CERT_CB 1
-
-#define HAVE_SSL_CTX_SET_CLIENT_HELLO_CB 1
-
-#define HAVE_SSL_CTX_SET_KEYLOG_CALLBACK 1
-
-#define HAVE_SSL_CTX_SET_NUM_TICKETS 1
-
 /* Define to 1 if you have the `strerror_r' function. */
 #undef HAVE_STRERROR_R
 
@@ -256,8 +248,6 @@
 /* Define to 1 if you have the `wcstombs_l' function. */
 #undef HAVE_WCSTOMBS_L
 
-#define HAVE_X509_GET_SIGNATURE_INFO 1
-
 #define HAVE_X86_64_POPCNTQ 1
 
 /* Define to 1 if you have the <xlocale.h> header file. */
@@ -272,9 +262,6 @@
 #define MAXIMUM_ALIGNOF 8
 
 #define MEMSET_LOOP_LIMIT 1024
-
-/* Define to the OpenSSL API version in use. This avoids deprecation warnings from newer OpenSSL versions. */
-#define OPENSSL_API_COMPAT 0x10101000L
 
 #define PACKAGE_BUGREPORT "pgsql-bugs@lists.postgresql.org"
 
@@ -323,9 +310,6 @@
 #undef USE_INJECTION_POINTS
 
 #define USE_LDAP 1
-
-/* Define to 1 to build with OpenSSL support. (-Dssl=openssl) */
-#define USE_OPENSSL 1
 
 #undef USE_SSE42_CRC32C
 
