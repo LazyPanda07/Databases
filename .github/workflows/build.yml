@@ -135,10 +135,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v7
-
-    - name: Get Postgres
-      run: choco install postgresql18 -y --params "'/Password:secret /Port:5432'"
-
+    
     - name: Get Redis
       uses: robinraju/release-downloader@v1.11
       with:
@@ -222,7 +219,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U test -d test_db"
+          --health-cmd "pg_isready -U test -d test"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
@@ -278,7 +275,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U test -d test_db"
+          --health-cmd "pg_isready -U test -d test"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
