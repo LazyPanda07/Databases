@@ -16,6 +16,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Install dependencies
+      run: choco install meson
+    
     - name: Get Postgres
       uses: actions/checkout@v7
       with:
@@ -28,10 +31,10 @@ jobs:
     - name: Build
       shell: bash
       run: |
-          ./configure --prefix=$(pwd)/build --without-readline
-          make -j $(nproc) -C src/interfaces/libpq
-          make install -C src/interfaces/libpq
-          ls build/lib
+        meson setup build --prefix=$(pwd)/build --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled
+        ninja -C build libpq
+        ninja -C build install
+        ls build/lib
 
     # - name: Prepare
     #   shell: bash
@@ -56,6 +59,11 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
 
     steps:
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y pkg-config libicu-dev bison flex
+
     - name: Get Postgres
       uses: actions/checkout@v7
       with:
@@ -120,6 +128,11 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu-cxx23:android
 
     steps:
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y bison flex
+
     - name: Get Postgres
       uses: actions/checkout@v7
       with:
