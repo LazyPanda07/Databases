@@ -118,6 +118,12 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu-cxx23:android
 
     steps:
+    - name: Get SQLite
+      uses: actions/checkout@v7
+      with:
+        repository: sqlite/sqlite
+        ref: ${{ env.SQLITE_TAG }}
+
     - name: Build
       run: |
         wget -O CMakeLists.txt https://pastebin.com/raw/RWw571SP
