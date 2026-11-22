@@ -74,6 +74,7 @@ else()
 	install(DIRECTORY vendor/hiredis/lib/Windows/ DESTINATION lib)
 	install(DIRECTORY vendor/postgres/lib/Windows/ DESTINATION lib)
 	install(FILES ${PROJECT_SOURCE_DIR}/vendor/sqlite3/dll/sqlite3.dll DESTINATION dll)
+	install(FILES ${PROJECT_SOURCE_DIR}/vendor/postgres/dll/libpq.dll DESTINATION dll)
 endif()
 
 target_include_directories(
@@ -95,7 +96,7 @@ target_link_libraries(
 	${PROJECT_NAME} PUBLIC
 	sqlite3
 	hiredis
-	pq
+	libpq
 )
 
 install(

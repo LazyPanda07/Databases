@@ -11,6 +11,7 @@ add_executable(
 	${PROJECT_NAME}
 	main.cpp
 	sqlite.cpp
+	postgres.cpp
 	redis.cpp
 )
 
@@ -39,6 +40,7 @@ target_link_libraries(
 	Databases
 	sqlite3
 	hiredis
+	libpq
 	gtest
 	gtest_main
 )

@@ -57,6 +57,12 @@
     <ClInclude Include="include\Implementations\RedisTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Implementations\PostgresDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Implementations\PostgresTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DatabaseFactory.cpp">
@@ -96,6 +102,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Implementations\RedisDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Implementations\PostgresDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Implementations\PostgresTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,10 +1,7 @@
 name: Build Postgres
 
 
-# on: workflow_dispatch
-on:
-  push: 
-    branches: [dev]
+on: workflow_dispatch
 
   
 env:
@@ -61,7 +58,7 @@ jobs:
         
     - name: Build
       run: |
-          ./configure --prefix=$(pwd)/build --without-readline --without-ssl
+          ./configure --prefix=$(pwd)/build --without-readline
           make -j $(nproc) -C src/interfaces/libpq
           make install -C src/interfaces/libpq
           ls build/lib
@@ -85,7 +82,7 @@ jobs:
         
     - name: Build
       run: |
-          ./configure --prefix=$(pwd)/build --without-readline --without-ssl
+          ./configure --prefix=$(pwd)/build --without-readline
           make -j $(nproc) -C src/interfaces/libpq
           make install -C src/interfaces/libpq
       
@@ -115,7 +112,7 @@ jobs:
         
     - name: Build
       run: |
-          ./configure --host=aarch64-linux-android --prefix=$(pwd)/build --without-readline --without-ssl
+          ./configure --host=aarch64-linux-android --prefix=$(pwd)/build --without-readline
           make -j $(nproc) -C src/interfaces/libpq
           make install -C src/interfaces/libpq
       

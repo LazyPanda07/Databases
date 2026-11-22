@@ -15,6 +15,8 @@
     <ClInclude Include="include\DatabaseUtility.h" />
     <ClInclude Include="include\Exceptions\DatabaseException.h" />
     <ClInclude Include="include\Database.h" />
+    <ClInclude Include="include\Implementations\PostgresDatabase.h" />
+    <ClInclude Include="include\Implementations\PostgresTable.h" />
     <ClInclude Include="include\Implementations\RedisDatabase.h" />
     <ClInclude Include="include\Implementations\RedisTable.h" />
     <ClInclude Include="include\Implementations\SqliteDatabase.h" />
@@ -31,6 +33,8 @@
     <ClCompile Include="src\DatabaseUtility.cpp" />
     <ClCompile Include="src\Exceptions\DatabaseException.cpp" />
     <ClCompile Include="src\Database.cpp" />
+    <ClCompile Include="src\Implementations\PostgresDatabase.cpp" />
+    <ClCompile Include="src\Implementations\PostgresTable.cpp" />
     <ClCompile Include="src\Implementations\RedisDatabase.cpp" />
     <ClCompile Include="src\Implementations\RedisTable.cpp" />
     <ClCompile Include="src\Implementations\SqliteDatabase.cpp" />
@@ -90,7 +94,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(ProjectDir)vendor\sqlite3\include\;$(ProjectDir)vendor\hiredis\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(ProjectDir)vendor\sqlite3\include\;$(ProjectDir)vendor\hiredis\include\;$(Projectdir)vendor\postgres\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,7 +114,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(ProjectDir)vendor\sqlite3\include\;$(ProjectDir)vendor\hiredis\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(ProjectDir)vendor\sqlite3\include\;$(ProjectDir)vendor\hiredis\include\;$(Projectdir)vendor\postgres\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

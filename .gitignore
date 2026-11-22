@@ -52,3 +52,4 @@ Databases/
 
 # Postgres
 !libpq.a
+!libpq.lib
