@@ -10,7 +10,14 @@ static std::shared_ptr<database::Database> db;
 
 TEST(Postgres, CreateDatabase)
 {
-	ASSERT_NO_THROW(db = database::createDatabase<database::PostgresDatabase>("host=127.0.0.1 port=5432 dbname=test user=postgres password=secret"));
+	std::string host = "127.0.0.1";
+
+	if (char* overrideHost = std::getenv("POSTGRES_HOST"))
+	{
+		host = overrideHost;
+	}
+
+	ASSERT_NO_THROW(db = database::createDatabase<database::PostgresDatabase>(std::format("host={} port=5432 dbname=test user=postgres password=secret", host)));
 }
 
 TEST(Postgres, CreateTable)
