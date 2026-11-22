@@ -170,6 +170,7 @@ jobs:
         }
 
     - name: Initialize database
+      shell: bash
       run: |
           export PGPASSWORD="secret"
 
