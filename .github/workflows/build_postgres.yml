@@ -16,9 +16,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Install dependencies
-      run: choco install meson
-    
     - name: Get Postgres
       uses: actions/checkout@v7
       with:
@@ -30,7 +27,7 @@ jobs:
         
     - name: Build
       run: |
-        refreshenv
+        python -m pip install meson
         meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled
         ninja -C build libpq
         ninja -C build install
