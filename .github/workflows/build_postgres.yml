@@ -1,10 +1,7 @@
 name: Build Postgres
 
 
-# on: workflow_dispatch
-on:
-  push:
-    branches: [dev]
+on: workflow_dispatch
 
   
 env:
@@ -29,9 +26,15 @@ jobs:
       run: |
         python -m pip install meson ninja
         choco install winflexbison
-        vcpkg install openssl:x64-windows
 
-        meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled
+        git clone https://github.com/openssl/openssl.git
+        cd openssl
+        perl Configure VC-WIN64A no-shared no-tests --prefix="$(pwd)/../openssl-install"
+        nmake
+        nmake install_sw
+        cd ..
+
+        meson setup build --prefix="$(pwd)/build" --buildtype=release -Dssl=openssl -Dreadline=disabled -Dicu=disabled -Dextra_include_dirs="$(pwd)/openssl-install/include" -Dextra_lib_dirs="$(pwd)/openssl-install/lib"
         ninja -C build libpq
         ninja -C build install
         ls build/lib
