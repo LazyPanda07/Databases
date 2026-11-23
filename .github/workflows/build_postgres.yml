@@ -120,7 +120,7 @@ jobs:
         
     - name: Build
       run: |
-          ./configure CC=${ANDROID_CROSS_COMPILER_CC} CXX=${ANDROID_CROSS_COMPILER_CXX} --prefix=$(pwd)/build --without-readline
+          ./configure CC=${ANDROID_CROSS_COMPILER_CC} CXX=${ANDROID_CROSS_COMPILER_CXX} --host=aarch64-linux-android --prefix=$(pwd)/build --without-readline
           make -j $(nproc) -C src/port
           make -j $(nproc) -C src/common
           make -j $(nproc) -C src/interfaces/libpq
