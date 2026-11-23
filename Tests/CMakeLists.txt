@@ -40,7 +40,6 @@ target_link_libraries(
 	Databases
 	sqlite3
 	hiredis
-	pq
 	gtest
 	gtest_main
 )
@@ -48,8 +47,14 @@ target_link_libraries(
 if (UNIX)
 	target_link_libraries(
 		${PROJECT_NAME} PRIVATE
+		pq
 		pgcommon_shlib
 		pgport_shlib
+	)
+elseif(WIN32)
+	target_link_libraries(
+		${PROJECT_NAME} PRIVATE
+		libpq
 	)
 endif()
 

@@ -54,5 +54,5 @@ Databases/
 !libpq.a
 !libpgcommon_shlib.a
 !libpgport_shlib.a
-!pq.lib
-!pq.dll
+!libpq.lib
+!libpq.dll

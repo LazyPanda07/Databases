@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 4.0.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
-project(Databases VERSION 1.8.1)
+project(Databases VERSION 1.8.2)
 
 set(SQLITE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3/lib CACHE STRING "Path to sqlite3 lib directory")
 set(HIREDIS_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/hiredis/lib CACHE STRING "Path to hiredis lib directory")
@@ -75,7 +75,7 @@ else()
 	install(DIRECTORY vendor/hiredis/lib/Windows/ DESTINATION lib)
 	install(DIRECTORY vendor/postgres/lib/Windows/ DESTINATION lib)
 	install(FILES ${PROJECT_SOURCE_DIR}/vendor/sqlite3/dll/sqlite3.dll DESTINATION dll)
-	install(FILES ${PROJECT_SOURCE_DIR}/vendor/postgres/dll/pq.dll DESTINATION dll)
+	install(FILES ${PROJECT_SOURCE_DIR}/vendor/postgres/dll/libpq.dll DESTINATION dll)
 endif()
 
 target_include_directories(
@@ -97,14 +97,19 @@ target_link_libraries(
 	${PROJECT_NAME} PUBLIC
 	sqlite3
 	hiredis
-	pq
 )
 
 if (UNIX)
 	target_link_libraries(
 		${PROJECT_NAME} PUBLIC
+		pq
 		pgcommon_shlib
 		pgport_shlib
+	)
+elseif(WIN32)
+	target_link_libraries(
+		${PROJECT_NAME} PUBLIC
+		libpq
 	)
 endif()
 
