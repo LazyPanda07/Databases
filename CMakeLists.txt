@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 4.0.0)
 
 set(CMAKE_CXX_STANDARD 20)
 
-project(Databases VERSION 1.8.1)
+project(Databases VERSION 1.8.2)
 
 set(SQLITE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/sqlite3/lib CACHE STRING "Path to sqlite3 lib directory")
 set(HIREDIS_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/vendor/hiredis/lib CACHE STRING "Path to hiredis lib directory")
